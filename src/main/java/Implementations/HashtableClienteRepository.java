@@ -70,14 +70,17 @@ public class HashtableClienteRepository implements ClienteRepository {
 
     @Override
     public void adicionarVeiculoAoCliente(String chave, Veiculos veiculo) {
-
-        Cliente cliente = clientes.get(chave);
-        if (cliente != null) {
-            cliente.adicionarVeiculo(veiculo); // Associe o veículo ao cliente
-            veiculos.put(veiculo.getPlaca(), veiculo); // Adiciona o veículo no repositório de veículos
+        if (verificarCliente(chave)) {
+            Cliente cliente = clientes.get(chave); // Obtém o cliente associado à chave
+            if (cliente != null) {
+                cliente.adicionarVeiculo(veiculo); // Associe o veículo ao cliente
+                veiculos.put(veiculo.getPlaca(), veiculo); // Adiciona o veículo no repositório de veículos
+            } else {
+                throw new IllegalArgumentException("Cliente não encontrado!");
+            }
         } else {
-            throw new IllegalArgumentException("Cliente não encontrado!"); // Lançando exceção
+            throw new IllegalArgumentException("Chave de cliente inválida!");
         }
-
     }
+
 }

@@ -21,8 +21,8 @@ public class CadastroClientes extends javax.swing.JFrame {
 
     public CadastroClientes(Principal principal) {
         initComponents();
-        this.principal = principal; // Inicializando a variável principal
-        tipoPessoaCombox.setSelectedIndex(0); // Deixa o JComboBox vazio inicialmente
+        this.principal = principal; 
+        tipoPessoaCombox.setSelectedIndex(0); 
         clienteController = new ClienteController(new ClienteService(new HashtableClienteRepository())); // Inicializa o controlador
 
         // Definindo o layout, fundo, etc.
@@ -587,13 +587,13 @@ public class CadastroClientes extends javax.swing.JFrame {
 
     private void buttonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenuActionPerformed
         if (principal != null) {
-            // Torna a janela atual invisível
+           
             this.setVisible(false);
 
-            // Torna o Principal (menu) visível novamente
+            
             principal.setVisible(true);
         } else {
-            // Tratar o caso onde principal é null, se necessário
+            
             System.out.println("Erro: a referência para o menu principal é null.");
         }
     }//GEN-LAST:event_buttonMenuActionPerformed
@@ -656,10 +656,10 @@ public class CadastroClientes extends javax.swing.JFrame {
 
     private void adicionarJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarJuridicaActionPerformed
         // Coleta os dados do cliente
-        String nome = textoNomeJuridica.getText();
-        String cnpj = textoCNPJ.getText();
-        String telefones = textoTelefonesJuridico.getText();
-        String endereco = textoEnderecoJuridico.getText();
+        String nome = textoNomeJuridica.getText().trim();
+        String cnpj = textoCNPJ.getText().trim();
+        String telefones = textoTelefonesJuridico.getText().trim();
+        String endereco = textoEnderecoJuridico.getText().trim();
         String email = textoEmailJuridico.getText();
         String contatos = textoContatosJuridico.getText();
         String inscricaoEstadual = textoInscricaoJuridica.getText();
@@ -683,7 +683,7 @@ public class CadastroClientes extends javax.swing.JFrame {
         clienteController.adicionarCliente(cliente, model);
 
         System.out.println(cliente.getID());
-        // Exibe a mensagem de sucesso
+
         JOptionPane.showMessageDialog(this, "Dados salvos com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_adicionarJuridicaActionPerformed
 
@@ -836,12 +836,9 @@ public class CadastroClientes extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            // Criando e exibindo a instância de Principal
             Principal principal = new Principal();
-            principal.setVisible(true); // Exibe a tela Principal
+            principal.setVisible(true); 
 
-            // Não é necessário criar e exibir CadastroClientes aqui diretamente
-            // A instância de CadastroClientes será criada dentro do Principal quando necessário
         });
     }
 

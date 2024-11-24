@@ -14,16 +14,15 @@ public class HashtableVeiculoRepository implements VeiculoRepository {
     private final Hashtable<String, Veiculos> veiculos = new Hashtable<>();
     private final Hashtable<String, Cliente> clientes = new Hashtable<>(); // Repositório de clientes
 
-    
     @Override
-    public void adicionarVeiculo(String chave, Veiculos veiculo) {
-        // Verifica se o cliente existe
-        Cliente cliente = clientes.get(chave);
-        if (cliente != null) {
-            cliente.adicionarVeiculo(veiculo); 
-            veiculos.put(veiculo.getPlaca(), veiculo); 
+    public void adicionarVeiculo(String placa, Veiculos veiculo) {
+        // Verifica se o veículo com a mesma placa já existe
+        if (buscarVeiculosPelaPlaca(placa) != null) {  
+            System.out.println("Veículo com a placa " + placa + " já existe!");
         } else {
-            System.out.println("Cliente não encontrado!");
+            // Se o veículo não existe, adiciona no repositório
+            veiculos.put(placa, veiculo);  //
+            System.out.println("Veículo com a placa " + placa + " adicionado com sucesso.");
         }
     }
 
@@ -55,10 +54,5 @@ public class HashtableVeiculoRepository implements VeiculoRepository {
     @Override
     public Veiculos buscarVeiculosPelaPlaca(String placa) {
         return veiculos.get(placa);
-    }
-
-    // Método para adicionar um cliente ao repositório
-    public void adicionarCliente(Cliente cliente) {
-        clientes.put(cliente.getID(), cliente);
     }
 }

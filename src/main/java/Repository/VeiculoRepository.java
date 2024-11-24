@@ -13,7 +13,7 @@ import java.util.Hashtable;
  */
 public interface VeiculoRepository {
 
-    void adicionarVeiculo(String chave, Veiculos veiculo);
+    void adicionarVeiculo(String placa, Veiculos veiculo);
     
     Veiculos buscarVeiculosPelaPlaca(String placa);
 

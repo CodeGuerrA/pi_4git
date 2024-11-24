@@ -20,8 +20,8 @@ public class ClienteVeiculos {
         this.veiculoRepository = veiculoRepository;
     }
 
-    public void adicionarVeiculo(String clienteID, Veiculos veiculo) {
-        veiculoRepository.adicionarVeiculo(clienteID, veiculo);
+    public void adicionarVeiculo(String Placa, Veiculos veiculo) {
+        veiculoRepository.adicionarVeiculo(Placa, veiculo);
     }
 
     public boolean atualizarVeiculo(String placa, Veiculos veiculoAtualizado) {

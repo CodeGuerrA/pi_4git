@@ -1,8 +1,6 @@
 package Model;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.UUID;
 
 public class Veiculos {
@@ -14,16 +12,16 @@ public class Veiculos {
     private String chassi;
     private String patrimonio;
     private Double kilometragem;
-    private LocalDate dataEntrada; // Mudado para LocalDate
+    private Date dataEntrada; // Continuamos com java.util.Date
     private String acessorios;
 
     public Veiculos() {
+        this.ID = gerarID(); // Gera um ID único ao criar um novo objeto
     }
 
- 
-
     // Construtor com parâmetros
-    public Veiculos(String modelo, String marca, String placa, String chassi, String patrimonio, Double kilometragem, String dataEntrada, String acessorios) {
+    public Veiculos(String modelo, String marca, String placa, String chassi, String patrimonio,
+            Double kilometragem, Date dataEntrada, String acessorios) {
         this.ID = gerarID(); // Gera um ID único
         this.modelo = modelo;
         this.marca = marca;
@@ -31,27 +29,18 @@ public class Veiculos {
         this.chassi = chassi;
         this.patrimonio = patrimonio;
         this.kilometragem = kilometragem;
+        this.dataEntrada = dataEntrada; // Recebe diretamente um objeto Date
         this.acessorios = acessorios;
-        this.dataEntrada = LocalDate.now();
-
-        // Tenta converter a dataEntrada e lida com erros
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            this.dataEntrada = LocalDate.parse(dataEntrada, formatter);
-        } catch (DateTimeParseException e) {
-            System.out.println("Formato de data inválido: " + dataEntrada);
-            this.dataEntrada = LocalDate.now(); // Define a data atual como padrão em caso de erro
-        }
     }
 
     // Método para gerar um ID único usando UUID
     private String gerarID() {
-        return UUID.randomUUID().toString(); // Gera um ID único com UUID
+        return UUID.randomUUID().toString();
     }
 
     // Getters e Setters
     public String getID() {
-        return this.ID; // Retorna o ID único do veículo
+        return this.ID;
     }
 
     public String getModelo() {
@@ -102,11 +91,11 @@ public class Veiculos {
         this.kilometragem = kilometragem;
     }
 
-    public LocalDate getDataEntrada() {
+    public Date getDataEntrada() {
         return dataEntrada;
     }
 
-    public void setDataEntrada(LocalDate dataEntrada) {
+    public void setDataEntrada(Date dataEntrada) {
         this.dataEntrada = dataEntrada;
     }
 

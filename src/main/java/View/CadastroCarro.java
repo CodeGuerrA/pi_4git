@@ -11,6 +11,8 @@ import Implementations.HashtableVeiculoRepository;
 import Model.Veiculos;
 import Service.ClienteService;
 import Service.ClienteVeiculos;
+import java.time.LocalDate;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Guerra
  */
 public class CadastroCarro extends javax.swing.JFrame {
-
+//Esta faltando alguns metodos porem esta quase pronto essa classe: Não esquecer de termina ele segunda e começar o Posse
     private final VeiculosController veiculosController;
     private final ClienteController clienteController;
     private Principal principal;
@@ -56,13 +58,13 @@ public class CadastroCarro extends javax.swing.JFrame {
         textChassi = new javax.swing.JTextField();
         textPatrimonio = new javax.swing.JTextField();
         textKilometragem = new javax.swing.JTextField();
-        textDataEntrada = new javax.swing.JTextField();
         textAcessorios = new javax.swing.JTextField();
         adicionarButton = new javax.swing.JButton();
         removerButton = new javax.swing.JButton();
         alterarButton = new javax.swing.JButton();
         buttonLimpar = new javax.swing.JButton();
         buttonMenuCarro = new javax.swing.JButton();
+        escolhadata = new com.toedter.calendar.JDateChooser();
         cadastroCarro = new javax.swing.JScrollPane();
         cadastroVeiculos = new javax.swing.JTable();
 
@@ -108,6 +110,8 @@ public class CadastroCarro extends javax.swing.JFrame {
             }
         });
 
+        escolhadata.setDateFormatString("dd-MM-yyyy");
+
         javax.swing.GroupLayout painelPrincipalLayout = new javax.swing.GroupLayout(painelPrincipal);
         painelPrincipal.setLayout(painelPrincipalLayout);
         painelPrincipalLayout.setHorizontalGroup(
@@ -145,8 +149,8 @@ public class CadastroCarro extends javax.swing.JFrame {
                             .addComponent(textChassi)
                             .addComponent(textPatrimonio)
                             .addComponent(textKilometragem)
-                            .addComponent(textDataEntrada)
-                            .addComponent(textAcessorios, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE))))
+                            .addComponent(textAcessorios, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                            .addComponent(escolhadata, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(506, Short.MAX_VALUE))
         );
         painelPrincipalLayout.setVerticalGroup(
@@ -181,9 +185,9 @@ public class CadastroCarro extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(textKilometragem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
-                    .addComponent(textDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(escolhadata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -212,6 +216,11 @@ public class CadastroCarro extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        cadastroVeiculos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cadastroVeiculosMouseClicked(evt);
             }
         });
         cadastroCarro.setViewportView(cadastroVeiculos);
@@ -249,13 +258,14 @@ public class CadastroCarro extends javax.swing.JFrame {
         String chassi = textChassi.getText().trim();
         String patrimonio = textPatrimonio.getText().trim();
         String kilometragemText = textKilometragem.getText().trim();
+        Date dataEntrada = escolhadata.getDate();
 
         Double kilometragem;
         try {
             kilometragem = Double.parseDouble(kilometragemText);
         } catch (NumberFormatException e) {
             System.out.println("Kilometragem deve ser um número válido.");
-            return; // Sai do método se a conversão falhar
+            return;
         }
 
         // Criando o veículo
@@ -266,18 +276,18 @@ public class CadastroCarro extends javax.swing.JFrame {
         veiculo.setChassi(chassi);
         veiculo.setPatrimonio(patrimonio);
         veiculo.setKilometragem(kilometragem);
+        veiculo.setDataEntrada(dataEntrada);
 
-        DefaultTableModel model = (DefaultTableModel) cadastroVeiculos.getModel();
-
-        // Verificando se o cliente existe
+// Verificando se o cliente existe
         if (clienteController.verificarCliente(chave)) {
+//Se o cliente existir quando ele cadastrar o veiculo ira associar ele ao cliente 
             veiculosController.adicionarVeiculo(placa, veiculo);
             clienteController.adicionarVeiculoAoCliente(chave, veiculo);
 
-            // Adicionando à tabela
-            model.addRow(new Object[]{
-                chave, modelo, marca, placa, chassi, patrimonio, kilometragem, textDataEntrada.getText().trim(), textAcessorios.getText().trim()
-            });
+            // Atualizando a tabela usando o método no controlador de veículos
+            veiculosController.carregarTabela((DefaultTableModel) cadastroVeiculos.getModel());
+
+            System.out.println("Veículo adicionado com sucesso!");
         } else {
             System.out.println("Cliente não encontrado.");
         }
@@ -291,12 +301,16 @@ public class CadastroCarro extends javax.swing.JFrame {
         principal.setVisible(true);
     }//GEN-LAST:event_buttonMenuCarroActionPerformed
 
+    private void cadastroVeiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cadastroVeiculosMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cadastroVeiculosMouseClicked
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-          Principal principal = new Principal();
+            Principal principal = new Principal();
             principal.setVisible(true); // Exibe a tela Principal
         });
     }
@@ -308,6 +322,7 @@ public class CadastroCarro extends javax.swing.JFrame {
     private javax.swing.JButton buttonMenuCarro;
     private javax.swing.JScrollPane cadastroCarro;
     private javax.swing.JTable cadastroVeiculos;
+    private com.toedter.calendar.JDateChooser escolhadata;
     private javax.swing.JLabel identidade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -321,7 +336,6 @@ public class CadastroCarro extends javax.swing.JFrame {
     private javax.swing.JButton removerButton;
     private javax.swing.JTextField textAcessorios;
     private javax.swing.JTextField textChassi;
-    private javax.swing.JTextField textDataEntrada;
     private javax.swing.JTextField textKilometragem;
     private javax.swing.JTextField textMarca;
     private javax.swing.JTextField textModelo;

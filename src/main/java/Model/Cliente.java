@@ -9,7 +9,7 @@ public class Cliente {
     private String ID;
     private String nome;
     private String endereco;
-    private String CPF; // Para Pessoa Física
+    private String CPF = "024.078.161-96"; // Para Pessoa Física
     private String CNPJ; // Para Pessoa Jurídica
     private String Ins_Estadual; // Para Pessoa Jurídica
     private String email;
