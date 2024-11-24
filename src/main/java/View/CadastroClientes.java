@@ -17,32 +17,26 @@ import javax.swing.table.DefaultTableModel;
 public class CadastroClientes extends javax.swing.JFrame {
 
     private final ClienteController clienteController;
-    private CardLayout cardLayout;
-    private Principal principal; // Variável para manter referência do menu principal
+    private final Principal principal; // Variável para manter referência do menu principal
 
-    public CadastroClientes() {
+    public CadastroClientes(Principal principal) {
         initComponents();
-        this.principal = principal; // Recebe a instância de Principal
-
+        this.principal = principal; // Inicializando a variável principal
         tipoPessoaCombox.setSelectedIndex(0); // Deixa o JComboBox vazio inicialmente
         clienteController = new ClienteController(new ClienteService(new HashtableClienteRepository())); // Inicializa o controlador
 
+        // Definindo o layout, fundo, etc.
         FormularioPanel.setLayout(new CardLayout());
         FormularioPanel.add(pessoaFisica, "PessoaFisica");
         FormularioPanel.add(pessoaJuridica, "PessoaJuridica");
 
         // Define a cor de fundo
         Color backgroundColor = new Color(240, 248, 255);
-
-        // Aplica a cor de fundo ao JFrame
         this.getContentPane().setBackground(backgroundColor);
-
-        // Aplica a cor de fundo aos painéis
         painelPrincipal.setBackground(backgroundColor);
         FormularioPanel.setBackground(backgroundColor);
         pessoaFisica.setBackground(backgroundColor);
         pessoaJuridica.setBackground(backgroundColor);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -72,7 +66,6 @@ public class CadastroClientes extends javax.swing.JFrame {
         textoTelefonesJuridico = new javax.swing.JTextField();
         textoCNPJ = new javax.swing.JTextField();
         cnpjJuridico = new javax.swing.JLabel();
-        cadastroCarrobutton = new javax.swing.JButton();
         pessoaFisica = new javax.swing.JPanel();
         NomePf = new javax.swing.JLabel();
         TextoNomepf = new javax.swing.JTextField();
@@ -174,13 +167,6 @@ public class CadastroClientes extends javax.swing.JFrame {
 
         cnpjJuridico.setText("CNPJ: ");
 
-        cadastroCarrobutton.setText("Carro");
-        cadastroCarrobutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastroCarrobuttonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pessoaJuridicaLayout = new javax.swing.GroupLayout(pessoaJuridica);
         pessoaJuridica.setLayout(pessoaJuridicaLayout);
         pessoaJuridicaLayout.setHorizontalGroup(
@@ -229,14 +215,12 @@ public class CadastroClientes extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(buttonRemoverPF, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cadastroCarrobutton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(buttonMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pessoaJuridicaLayout.createSequentialGroup()
                                 .addComponent(inscricaoJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(textoInscricaoJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(351, Short.MAX_VALUE))
+                .addContainerGap(456, Short.MAX_VALUE))
         );
         pessoaJuridicaLayout.setVerticalGroup(
             pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,8 +259,7 @@ public class CadastroClientes extends javax.swing.JFrame {
                     .addComponent(adicionarJuridica)
                     .addComponent(buttonLimpar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonRemoverPF)
-                    .addComponent(buttonMenu)
-                    .addComponent(cadastroCarrobutton)))
+                    .addComponent(buttonMenu)))
         );
 
         FormularioPanel.add(pessoaJuridica, "card3");
@@ -603,11 +586,16 @@ public class CadastroClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRemoverPFActionPerformed
 
     private void buttonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenuActionPerformed
-        // Torna a janela atual invisível
-        this.setVisible(false);
+        if (principal != null) {
+            // Torna a janela atual invisível
+            this.setVisible(false);
 
-        // Torna o Principal (menu) visível novamente
-        principal.setVisible(true);
+            // Torna o Principal (menu) visível novamente
+            principal.setVisible(true);
+        } else {
+            // Tratar o caso onde principal é null, se necessário
+            System.out.println("Erro: a referência para o menu principal é null.");
+        }
     }//GEN-LAST:event_buttonMenuActionPerformed
 
     private void buttonLimpar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimpar1ActionPerformed
@@ -675,12 +663,9 @@ public class CadastroClientes extends javax.swing.JFrame {
         String email = textoEmailJuridico.getText();
         String contatos = textoContatosJuridico.getText();
         String inscricaoEstadual = textoInscricaoJuridica.getText();
-
-        // Validação dos dados
         if (!Validator.validarEntradaPJ(nome, cnpj, telefones, endereco, email, contatos, inscricaoEstadual)) {
             return;
         }
-
         // Cria o cliente
         Cliente cliente = new Cliente();
         cliente.setNome(nome);
@@ -844,20 +829,19 @@ public class CadastroClientes extends javax.swing.JFrame {
         TextoEmailFisica.setText("");
         TextoContatosFisica.setText("");
     }//GEN-LAST:event_buttonLimparActionPerformed
-
-    private void cadastroCarrobuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroCarrobuttonActionPerformed
-        CadastroCarro cadastroCarro = new CadastroCarro();
-        cadastroCarro.setVisible(true);
-    }//GEN-LAST:event_cadastroCarrobuttonActionPerformed
     public void carregarTabela() {
         DefaultTableModel model = (DefaultTableModel) cadastroClientes.getModel();
         clienteController.carregarTabela(model);
     }
 
     public static void main(String args[]) {
-
         java.awt.EventQueue.invokeLater(() -> {
-            new CadastroClientes().setVisible(true);
+            // Criando e exibindo a instância de Principal
+            Principal principal = new Principal();
+            principal.setVisible(true); // Exibe a tela Principal
+
+            // Não é necessário criar e exibir CadastroClientes aqui diretamente
+            // A instância de CadastroClientes será criada dentro do Principal quando necessário
         });
     }
 
@@ -884,7 +868,6 @@ public class CadastroClientes extends javax.swing.JFrame {
     private javax.swing.JButton buttonRemover;
     private javax.swing.JButton buttonRemoverPF;
     private javax.swing.JButton buttton2Menu;
-    private javax.swing.JButton cadastroCarrobutton;
     private javax.swing.JTable cadastroClientes;
     private javax.swing.JLabel cnpjJuridico;
     private javax.swing.JLabel contatoJuridico;

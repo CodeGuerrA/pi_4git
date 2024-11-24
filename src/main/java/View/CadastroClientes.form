@@ -176,8 +176,6 @@
                                           <Component id="buttonRemoverPF" min="-2" pref="87" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Component id="buttonMenu" min="-2" pref="87" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="cadastroCarrobutton" min="-2" pref="87" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <Component id="inscricaoJuridica" min="-2" pref="102" max="-2" attributes="0"/>
@@ -187,7 +185,7 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="351" max="32767" attributes="0"/>
+                          <EmptySpace pref="456" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -236,7 +234,6 @@
                               <Component id="buttonLimpar1" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="buttonRemoverPF" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="buttonMenu" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cadastroCarrobutton" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -343,14 +340,6 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="CNPJ: "/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JButton" name="cadastroCarrobutton">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Carro"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cadastroCarrobuttonActionPerformed"/>
-                  </Events>
                 </Component>
               </SubComponents>
             </Container>

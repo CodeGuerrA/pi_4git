@@ -23,15 +23,11 @@ public class CadastroCarro extends javax.swing.JFrame {
     private final ClienteController clienteController;
     private Principal principal;
 
-    /**
-     * Creates new form CadastroCarro
-     */
-    public CadastroCarro() {
+    public CadastroCarro(Principal principal) {
         initComponents();
         this.principal = principal;
         veiculosController = new VeiculosController(new ClienteVeiculos(new HashtableVeiculoRepository()));
         clienteController = new ClienteController(new ClienteService(new HashtableClienteRepository())); // Inicializa o controlador
-
     }
 
     /**
@@ -66,7 +62,7 @@ public class CadastroCarro extends javax.swing.JFrame {
         removerButton = new javax.swing.JButton();
         alterarButton = new javax.swing.JButton();
         buttonLimpar = new javax.swing.JButton();
-        buttonMenu = new javax.swing.JButton();
+        buttonMenuCarro = new javax.swing.JButton();
         cadastroCarro = new javax.swing.JScrollPane();
         cadastroVeiculos = new javax.swing.JTable();
 
@@ -105,10 +101,10 @@ public class CadastroCarro extends javax.swing.JFrame {
 
         buttonLimpar.setText("Limpar");
 
-        buttonMenu.setText("Menu");
-        buttonMenu.addActionListener(new java.awt.event.ActionListener() {
+        buttonMenuCarro.setText("Menu");
+        buttonMenuCarro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonMenuActionPerformed(evt);
+                buttonMenuCarroActionPerformed(evt);
             }
         });
 
@@ -128,7 +124,7 @@ public class CadastroCarro extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(buttonLimpar)
                         .addGap(18, 18, 18)
-                        .addComponent(buttonMenu))
+                        .addComponent(buttonMenuCarro))
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
                         .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -198,7 +194,7 @@ public class CadastroCarro extends javax.swing.JFrame {
                     .addComponent(removerButton)
                     .addComponent(alterarButton)
                     .addComponent(buttonLimpar)
-                    .addComponent(buttonMenu))
+                    .addComponent(buttonMenuCarro))
                 .addGap(31, 31, 31))
         );
 
@@ -247,81 +243,61 @@ public class CadastroCarro extends javax.swing.JFrame {
 
     private void adicionarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarButtonActionPerformed
         String chave = textidentidade.getText().trim();
-        String Modelo = textModelo.getText().trim();
-        String Marca = textMarca.getText().trim();
-        String Placa = textPlaca.getText().trim();
-        String Chassi = textChassi.getText().trim();
-        String Patrimonio = textPatrimonio.getText().trim();
+        String modelo = textModelo.getText().trim();
+        String marca = textMarca.getText().trim();
+        String placa = textPlaca.getText().trim();
+        String chassi = textChassi.getText().trim();
+        String patrimonio = textPatrimonio.getText().trim();
         String kilometragemText = textKilometragem.getText().trim();
 
-        Double Kilometragem;
+        Double kilometragem;
         try {
-            Kilometragem = Double.parseDouble(kilometragemText);
+            kilometragem = Double.parseDouble(kilometragemText);
         } catch (NumberFormatException e) {
             System.out.println("Kilometragem deve ser um número válido.");
             return; // Sai do método se a conversão falhar
         }
 
-        Veiculos veiculos = new Veiculos();
-        veiculos.setModelo(Modelo);
-        veiculos.setMarca(Marca);
-        veiculos.setPlaca(Placa);
-        veiculos.setChassi(Chassi);
-        veiculos.setPatrimonio(Patrimonio);
-        veiculos.setKilometragem(Kilometragem);
+        // Criando o veículo
+        Veiculos veiculo = new Veiculos();
+        veiculo.setModelo(modelo);
+        veiculo.setMarca(marca);
+        veiculo.setPlaca(placa);
+        veiculo.setChassi(chassi);
+        veiculo.setPatrimonio(patrimonio);
+        veiculo.setKilometragem(kilometragem);
 
         DefaultTableModel model = (DefaultTableModel) cadastroVeiculos.getModel();
 
+        // Verificando se o cliente existe
         if (clienteController.verificarCliente(chave)) {
-            veiculosController.adicionarVeiculo(Placa, veiculos);
-            clienteController.adicionarVeiculoAoCliente(chave, veiculos);
+            veiculosController.adicionarVeiculo(placa, veiculo);
+            clienteController.adicionarVeiculoAoCliente(chave, veiculo);
 
-            
+            // Adicionando à tabela
+            model.addRow(new Object[]{
+                chave, modelo, marca, placa, chassi, patrimonio, kilometragem, textDataEntrada.getText().trim(), textAcessorios.getText().trim()
+            });
         } else {
             System.out.println("Cliente não encontrado.");
         }
 
     }//GEN-LAST:event_adicionarButtonActionPerformed
 
-    private void buttonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenuActionPerformed
-        this.setVisible(false);
+    private void buttonMenuCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenuCarroActionPerformed
+        this.setVisible(false); // Esconde a tela de cadastro de carro
 
         // Torna o Principal (menu) visível novamente
         principal.setVisible(true);
-    }//GEN-LAST:event_buttonMenuActionPerformed
+    }//GEN-LAST:event_buttonMenuCarroActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroCarro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroCarro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroCarro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroCarro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastroCarro().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+          Principal principal = new Principal();
+            principal.setVisible(true); // Exibe a tela Principal
         });
     }
 
@@ -329,7 +305,7 @@ public class CadastroCarro extends javax.swing.JFrame {
     private javax.swing.JButton adicionarButton;
     private javax.swing.JButton alterarButton;
     private javax.swing.JButton buttonLimpar;
-    private javax.swing.JButton buttonMenu;
+    private javax.swing.JButton buttonMenuCarro;
     private javax.swing.JScrollPane cadastroCarro;
     private javax.swing.JTable cadastroVeiculos;
     private javax.swing.JLabel identidade;

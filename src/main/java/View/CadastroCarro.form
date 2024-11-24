@@ -70,7 +70,7 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="buttonLimpar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="buttonMenu" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonMenuCarro" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -156,7 +156,7 @@
                       <Component id="removerButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="alterarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="buttonLimpar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="buttonMenu" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="buttonMenuCarro" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               </Group>
@@ -250,12 +250,12 @@
             <Property name="text" type="java.lang.String" value="Limpar"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="buttonMenu">
+        <Component class="javax.swing.JButton" name="buttonMenuCarro">
           <Properties>
             <Property name="text" type="java.lang.String" value="Menu"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMenuActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonMenuCarroActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

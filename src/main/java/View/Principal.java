@@ -12,16 +12,15 @@ import javax.swing.JFrame;
  */
 public class Principal extends javax.swing.JFrame {
 
-    private CadastroClientes cadastroClientes; 
-    private CadastroCarro cadastroCarro; 
+    private CadastroClientes cadastroClientes;
+    private CadastroCarro cadastroCarro;
 
     public Principal() {
-        initComponents(); 
-        // Criando uma instância das classes uma única vez
-        cadastroClientes = new CadastroClientes();
-        cadastroCarro = new CadastroCarro();
+        initComponents();
+        // Passando 'this' (referência para a instância atual de Principal) para o CadastroClientes
+        cadastroClientes = new CadastroClientes(this);
+        cadastroCarro = new CadastroCarro(this);
     }
-//
 
     /**
      * This method is called from within the constructor to initialize the form.
