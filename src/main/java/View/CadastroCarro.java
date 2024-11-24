@@ -21,12 +21,14 @@ public class CadastroCarro extends javax.swing.JFrame {
 
     private final VeiculosController veiculosController;
     private final ClienteController clienteController;
+    private Principal principal;
 
     /**
      * Creates new form CadastroCarro
      */
     public CadastroCarro() {
         initComponents();
+        this.principal = principal;
         veiculosController = new VeiculosController(new ClienteVeiculos(new HashtableVeiculoRepository()));
         clienteController = new ClienteController(new ClienteService(new HashtableClienteRepository())); // Inicializa o controlador
 
@@ -104,6 +106,11 @@ public class CadastroCarro extends javax.swing.JFrame {
         buttonLimpar.setText("Limpar");
 
         buttonMenu.setText("Menu");
+        buttonMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMenuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelPrincipalLayout = new javax.swing.GroupLayout(painelPrincipal);
         painelPrincipal.setLayout(painelPrincipalLayout);
@@ -229,8 +236,8 @@ public class CadastroCarro extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(painelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cadastroCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cadastroCarro, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -275,6 +282,13 @@ public class CadastroCarro extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_adicionarButtonActionPerformed
+
+    private void buttonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenuActionPerformed
+        this.setVisible(false);
+
+        // Torna o Principal (menu) visível novamente
+        principal.setVisible(true);
+    }//GEN-LAST:event_buttonMenuActionPerformed
 
     /**
      * @param args the command line arguments

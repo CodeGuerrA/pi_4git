@@ -11,23 +11,19 @@ import Service.ClienteService;
 import Util.Validator;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Font;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Guerra
- */
 public class CadastroClientes extends javax.swing.JFrame {
 
     private final ClienteController clienteController;
     private CardLayout cardLayout;
-    private static CadastroClientes instance;
-    private CadastroCarro cadastroCarro;
+    private Principal principal; // Variável para manter referência do menu principal
 
     public CadastroClientes() {
         initComponents();
+        this.principal = principal; // Recebe a instância de Principal
+
         tipoPessoaCombox.setSelectedIndex(0); // Deixa o JComboBox vazio inicialmente
         clienteController = new ClienteController(new ClienteService(new HashtableClienteRepository())); // Inicializa o controlador
 
@@ -47,13 +43,6 @@ public class CadastroClientes extends javax.swing.JFrame {
         pessoaFisica.setBackground(backgroundColor);
         pessoaJuridica.setBackground(backgroundColor);
 
-    }
-
-    public static CadastroClientes getInstance() {
-        if (instance == null) {
-            instance = new CadastroClientes(); // Cria uma nova instância se não existir
-        }
-        return instance;
     }
 
     @SuppressWarnings("unchecked")
@@ -614,13 +603,13 @@ public class CadastroClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRemoverPFActionPerformed
 
     private void buttonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenuActionPerformed
-        abrirMenu();
+        // Torna a janela atual invisível
+        this.setVisible(false);
+
+        // Torna o Principal (menu) visível novamente
+        principal.setVisible(true);
     }//GEN-LAST:event_buttonMenuActionPerformed
-    private void abrirMenu() {
-        Principal p = Principal.getInstance(); // Obtém a instância única do menu
-        this.dispose(); // Fecha a janela atual
-        p.setVisible(true); // Torna o menu visível
-    }
+
     private void buttonLimpar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLimpar1ActionPerformed
         textoNomeJuridica.setText("");
         textoCNPJ.setText("");
@@ -678,6 +667,7 @@ public class CadastroClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_alterar_ClientesActionPerformed
 
     private void adicionarJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarJuridicaActionPerformed
+        // Coleta os dados do cliente
         String nome = textoNomeJuridica.getText();
         String cnpj = textoCNPJ.getText();
         String telefones = textoTelefonesJuridico.getText();
@@ -686,8 +676,12 @@ public class CadastroClientes extends javax.swing.JFrame {
         String contatos = textoContatosJuridico.getText();
         String inscricaoEstadual = textoInscricaoJuridica.getText();
 
-       
+        // Validação dos dados
+        if (!Validator.validarEntradaPJ(nome, cnpj, telefones, endereco, email, contatos, inscricaoEstadual)) {
+            return;
+        }
 
+        // Cria o cliente
         Cliente cliente = new Cliente();
         cliente.setNome(nome);
         cliente.setCNPJ(cnpj);
@@ -697,11 +691,14 @@ public class CadastroClientes extends javax.swing.JFrame {
         cliente.setContatos(contatos);
         cliente.setIns_Estadual(inscricaoEstadual);
 
+        // Obtém o modelo da tabela
         DefaultTableModel model = (DefaultTableModel) cadastroClientes.getModel();
 
+        // Adiciona o cliente à lista e atualiza a tabela
         clienteController.adicionarCliente(cliente, model);
 
         System.out.println(cliente.getID());
+        // Exibe a mensagem de sucesso
         JOptionPane.showMessageDialog(this, "Dados salvos com sucesso!", "Confirmação", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_adicionarJuridicaActionPerformed
 
@@ -735,7 +732,11 @@ public class CadastroClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRemoverActionPerformed
 
     private void buttton2MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttton2MenuActionPerformed
-        abrirMenu();
+// Torna a janela atual invisível
+        this.setVisible(false);
+
+        // Torna o Principal (menu) visível novamente
+        principal.setVisible(true);
     }//GEN-LAST:event_buttton2MenuActionPerformed
 
     private void alterar_cliente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterar_cliente2ActionPerformed
@@ -845,19 +846,8 @@ public class CadastroClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonLimparActionPerformed
 
     private void cadastroCarrobuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroCarrobuttonActionPerformed
-
-        if (cadastroCarro == null) {
-            cadastroCarro = new CadastroCarro(); // Cria nova instância apenas se for nula
-        }
-
-        // Torna a janela visível se ela não estiver visível
-        if (!cadastroCarro.isVisible()) {
-            cadastroCarro.setVisible(true); // Exibe a janela
-
-        } else {
-            cadastroCarro.toFront(); // Traz a janela para frente
-            cadastroCarro.requestFocus(); // Solicita foco para a janela
-        }
+        CadastroCarro cadastroCarro = new CadastroCarro();
+        cadastroCarro.setVisible(true);
     }//GEN-LAST:event_cadastroCarrobuttonActionPerformed
     public void carregarTabela() {
         DefaultTableModel model = (DefaultTableModel) cadastroClientes.getModel();

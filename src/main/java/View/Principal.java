@@ -4,25 +4,24 @@
  */
 package View;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Guerra
  */
 public class Principal extends javax.swing.JFrame {
 
-    private CadastroClientes cadastroClientes; // Variável de instância para manter a referência
-    private static Principal instance;
+    private CadastroClientes cadastroClientes; 
+    private CadastroCarro cadastroCarro; 
 
-    private Principal() {
-        initComponents(); // Inicializa os componentes da interface
+    public Principal() {
+        initComponents(); 
+        // Criando uma instância das classes uma única vez
+        cadastroClientes = new CadastroClientes();
+        cadastroCarro = new CadastroCarro();
     }
-
-    public static Principal getInstance() {
-        if (instance == null) {
-            instance = new Principal(); // Cria uma nova instância se não existir
-        }
-        return instance; // Retorna a instância existente
-    }
+//
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,13 +33,21 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         CadastroCliente = new javax.swing.JButton();
+        CadastroCarro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        CadastroCliente.setText("cliente");
+        CadastroCliente.setText("Cadastro Cliente");
         CadastroCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CadastroClienteActionPerformed(evt);
+            }
+        });
+
+        CadastroCarro.setText("Cadastro Carro");
+        CadastroCarro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CadastroCarroActionPerformed(evt);
             }
         });
 
@@ -50,14 +57,18 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(CadastroCliente)
-                .addContainerGap(311, Short.MAX_VALUE))
+                .addComponent(CadastroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
+                .addComponent(CadastroCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(CadastroCliente)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CadastroCliente)
+                    .addComponent(CadastroCarro))
                 .addContainerGap(252, Short.MAX_VALUE))
         );
 
@@ -66,19 +77,12 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CadastroClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadastroClienteActionPerformed
-        if (cadastroClientes == null) {
-            cadastroClientes = new CadastroClientes(); // Cria nova instância apenas se for nula
-        }
-
-        // Torna a janela visível se ela não estiver visível
-        if (!cadastroClientes.isVisible()) {
-            cadastroClientes.setVisible(true); // Exibe a janela
-
-        } else {
-            cadastroClientes.toFront(); // Traz a janela para frente
-            cadastroClientes.requestFocus(); // Solicita foco para a janela
-        }
+        cadastroClientes.setVisible(true);
     }//GEN-LAST:event_CadastroClienteActionPerformed
+
+    private void CadastroCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadastroCarroActionPerformed
+        cadastroCarro.setVisible(true);
+    }//GEN-LAST:event_CadastroCarroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -116,6 +120,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CadastroCarro;
     private javax.swing.JButton CadastroCliente;
     // End of variables declaration//GEN-END:variables
 }
