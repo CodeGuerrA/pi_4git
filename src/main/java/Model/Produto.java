@@ -75,6 +75,6 @@ public class Produto {
     }
 
     public void setPrecoFinal(double precoFinal) {
-        this.precoFinal = precoFinal;
+        this.precoFinal = this.precoUnitario * this.quantidade;
     }
 }
