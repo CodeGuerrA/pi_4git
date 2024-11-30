@@ -4,6 +4,7 @@
  */
 package Repository;
 
+import Model.Colaborador;
 import Model.OrdemServico;
 import java.util.Hashtable;
 
@@ -11,16 +12,9 @@ import java.util.Hashtable;
  *
  * @author Guerra
  */
-public interface OrdemServicoRepository {
-    void criarOrdemServico(OrdemServico ordemServico);
-    
-    Hashtable<String, OrdemServico> listarOrdensServico();
-    
-    OrdemServico buscarOrdemId(String id);
-    
-    boolean removerOrdemServico(String id);
-    boolean atualizarOrdemServico(OrdemServico ordemServico);
-        
-    
-    
+public interface IOrdemServicoCRUD {
+    public void insertOrdemServico(OrdemServico orderServico) throws Exception;
+    public void updateColaborador(OrdemServico ordemServico) throws Exception;
+    public void deleteOrdemServicoById(String id) throws Exception;
+    public void selectOrdemServico(String id) throws Exception;   
 }
