@@ -4,21 +4,17 @@
  */
 package View;
 
-import Controller.HashtableClienteController;
 import Model.Cliente;
 import Persistence.ClientesDAO;
-import Service.ClienteService;
-import Util.Validar;
 import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.JOptionPane;
-import javax.xml.validation.Validator;
 
 public class CadastroClientes extends javax.swing.JFrame {
-    
+
     private final Principal principal; // Variável para manter referência do menu principal
     private final ConsultaClientes ListaClientes;
-    
+
     public CadastroClientes(Principal principal) {
         initComponents();
         this.principal = principal;
@@ -37,7 +33,7 @@ public class CadastroClientes extends javax.swing.JFrame {
         pessoaFisica.setBackground(backgroundColor);
         pessoaJuridica.setBackground(backgroundColor);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -63,9 +59,6 @@ public class CadastroClientes extends javax.swing.JFrame {
         textoCNPJ = new javax.swing.JTextField();
         cnpjJuridico = new javax.swing.JLabel();
         tabelaClientes = new javax.swing.JButton();
-        excluirJuridica = new javax.swing.JButton();
-        excluircnpj = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         pessoaFisica = new javax.swing.JPanel();
         NomePf = new javax.swing.JLabel();
         TextoNomepf = new javax.swing.JTextField();
@@ -80,9 +73,6 @@ public class CadastroClientes extends javax.swing.JFrame {
         TextoEmailFisica = new javax.swing.JTextField();
         buttton2Menu = new javax.swing.JButton();
         tabelaClientes2 = new javax.swing.JButton();
-        buttonExcluirF = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        textRemoverpf = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(51, 204, 255));
@@ -148,87 +138,66 @@ public class CadastroClientes extends javax.swing.JFrame {
             }
         });
 
-        excluirJuridica.setText("Excluir");
-        excluirJuridica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                excluirJuridicaActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Remover");
-
         javax.swing.GroupLayout pessoaJuridicaLayout = new javax.swing.GroupLayout(pessoaJuridica);
         pessoaJuridica.setLayout(pessoaJuridicaLayout);
         pessoaJuridicaLayout.setHorizontalGroup(
             pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pessoaJuridicaLayout.createSequentialGroup()
-                .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(excluirJuridica))
+                        .addGap(40, 40, 40)
+                        .addComponent(enderecoJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textoEnderecoJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pessoaJuridicaLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(nomeJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textoNomeJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pessoaJuridicaLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(cnpjJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textoCNPJ, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pessoaJuridicaLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(contatoJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textoTelefonesJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pessoaJuridicaLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(emailJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textoEmailJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pessoaJuridicaLayout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(textoContatosJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pessoaJuridicaLayout.createSequentialGroup()
                         .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(enderecoJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(textoEnderecoJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addComponent(nomeJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(textoNomeJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(cnpjJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(textoCNPJ, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(contatoJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(textoTelefonesJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(emailJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(textoEmailJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(textoContatosJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                        .addGap(20, 20, 20)
-                                        .addComponent(inscricaoJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pessoaJuridicaLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(adicionarJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                                        .addComponent(buttonMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(tabelaClientes))
-                                    .addComponent(textoInscricaoJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                                .addGap(20, 20, 20)
+                                .addComponent(inscricaoJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pessoaJuridicaLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(adicionarJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(excluircnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(51, 51, 51))
+                            .addGroup(pessoaJuridicaLayout.createSequentialGroup()
+                                .addComponent(buttonMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tabelaClientes))
+                            .addComponent(textoInscricaoJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(366, Short.MAX_VALUE))
         );
         pessoaJuridicaLayout.setVerticalGroup(
             pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pessoaJuridicaLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(44, 44, 44)
                 .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nomeJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textoNomeJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(excluircnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textoNomeJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cnpjJuridico, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -257,8 +226,7 @@ public class CadastroClientes extends javax.swing.JFrame {
                 .addGroup(pessoaJuridicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(adicionarJuridica)
                     .addComponent(buttonMenu)
-                    .addComponent(tabelaClientes)
-                    .addComponent(excluirJuridica)))
+                    .addComponent(tabelaClientes)))
         );
 
         FormularioPanel.add(pessoaJuridica, "card3");
@@ -326,15 +294,6 @@ public class CadastroClientes extends javax.swing.JFrame {
             }
         });
 
-        buttonExcluirF.setText("Excluir");
-        buttonExcluirF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonExcluirFActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Remover");
-
         javax.swing.GroupLayout pessoaFisicaLayout = new javax.swing.GroupLayout(pessoaFisica);
         pessoaFisica.setLayout(pessoaFisicaLayout);
         pessoaFisicaLayout.setHorizontalGroup(
@@ -357,31 +316,19 @@ public class CadastroClientes extends javax.swing.JFrame {
                                     .addComponent(TextoEmailFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(TextTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(TextoEnderecoFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TextoCpf_pf, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(142, 142, 142))
+                                    .addComponent(TextoCpf_pf, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(pessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pessoaFisicaLayout.createSequentialGroup()
                             .addComponent(emailFisico, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(456, 456, 456))
-                        .addGroup(pessoaFisicaLayout.createSequentialGroup()
-                            .addComponent(EnderecoFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(444, 444, 444)))
+                            .addGap(314, 314, 314))
+                        .addComponent(EnderecoFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pessoaFisicaLayout.createSequentialGroup()
                         .addComponent(adicionarFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttton2Menu, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tabelaClientes2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(pessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pessoaFisicaLayout.createSequentialGroup()
-                        .addGroup(pessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(textRemoverpf, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(40, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pessoaFisicaLayout.createSequentialGroup()
-                        .addComponent(buttonExcluirF)
-                        .addGap(17, 17, 17))))
+                        .addComponent(tabelaClientes2)))
+                .addContainerGap(361, Short.MAX_VALUE))
         );
         pessoaFisicaLayout.setVerticalGroup(
             pessoaFisicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -412,14 +359,6 @@ public class CadastroClientes extends javax.swing.JFrame {
                     .addComponent(buttton2Menu)
                     .addComponent(tabelaClientes2))
                 .addGap(27, 27, 27))
-            .addGroup(pessoaFisicaLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel3)
-                .addGap(4, 4, 4)
-                .addComponent(textRemoverpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonExcluirF)
-                .addGap(19, 19, 19))
         );
 
         FormularioPanel.add(pessoaFisica, "card2");
@@ -467,7 +406,7 @@ public class CadastroClientes extends javax.swing.JFrame {
 
     private void tipoPessoaComboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoPessoaComboxActionPerformed
         CardLayout cardLayout = (CardLayout) FormularioPanel.getLayout();
-        
+
         if (tipoPessoaCombox.getSelectedIndex() == 0) { // Pessoa Física
             cardLayout.show(FormularioPanel, "PessoaFisica");
         } else if (tipoPessoaCombox.getSelectedIndex() == 1) { // Pessoa Jurídica
@@ -480,9 +419,9 @@ public class CadastroClientes extends javax.swing.JFrame {
         TextTelefone.setText("");
         TextoEnderecoFisica.setText("");
         TextoEmailFisica.setText("");
-        
+
     }
-    
+
     private void limparCamposPessoaJuridica() {
         textoNomeJuridica.setText("");
         textoCNPJ.setText("");
@@ -494,12 +433,12 @@ public class CadastroClientes extends javax.swing.JFrame {
     }
     private void buttonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenuActionPerformed
         if (principal != null) {
-            
+
             this.setVisible(false);
-            
+
             principal.setVisible(true);
         } else {
-            
+
             System.out.println("Erro: a referência para o menu principal é null.");
         }
     }//GEN-LAST:event_buttonMenuActionPerformed
@@ -514,7 +453,6 @@ public class CadastroClientes extends javax.swing.JFrame {
             String email = textoEmailJuridico.getText().trim();
             String contatos = textoContatosJuridico.getText().trim();
             String inscricaoEstadual = textoInscricaoJuridica.getText().trim();
-            
 
             // Cria o cliente
             Cliente cliente = new Cliente();
@@ -542,13 +480,13 @@ public class CadastroClientes extends javax.swing.JFrame {
             textoEmailJuridico.setText("");
             textoContatosJuridico.setText("");
             textoInscricaoJuridica.setText("");
-            
+
         } catch (Exception e) {
             e.printStackTrace(); // Exibe o erro caso algo dê errado
             JOptionPane.showMessageDialog(this, "Erro ao adicionar cliente: " + e.getMessage(),
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        
+
 
     }//GEN-LAST:event_adicionarJuridicaActionPerformed
 
@@ -588,7 +526,6 @@ public class CadastroClientes extends javax.swing.JFrame {
             String telefone = TextTelefone.getText().trim();
             String endereco = TextoEnderecoFisica.getText().trim();
             String email = TextoEmailFisica.getText().trim();
-       
 
             // Cria o cliente
             Cliente cliente = new Cliente();
@@ -608,7 +545,7 @@ public class CadastroClientes extends javax.swing.JFrame {
             TextTelefone.setText("");
             TextoEnderecoFisica.setText("");
             TextoEmailFisica.setText("");
-            
+
         } catch (Exception e) {
             e.printStackTrace();  // Exibe o erro caso algo dê errado
             JOptionPane.showMessageDialog(this, "Erro ao adicionar cliente: " + e.getMessage(),
@@ -634,36 +571,11 @@ public class CadastroClientes extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_tabelaClientes2ActionPerformed
 
-    private void excluirJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirJuridicaActionPerformed
-        try {
-            String cnpj = excluircnpj.getText().trim();
-            ClientesDAO clientesDAO = new ClientesDAO();
-            clientesDAO.removerPJ(cnpj);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Cliente removido com sucesso!",
-                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        }
-        
-
-    }//GEN-LAST:event_excluirJuridicaActionPerformed
-
-    private void buttonExcluirFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirFActionPerformed
-        try {
-            String cpf = textRemoverpf.getText().trim();
-            ClientesDAO clientesDAO = new ClientesDAO();
-            clientesDAO.removerPF(cpf);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Cliente removido com sucesso!",
-                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            textRemoverpf.setText("");
-        }
-    }//GEN-LAST:event_buttonExcluirFActionPerformed
-    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
             Principal principal = new Principal();
             principal.setVisible(true);
-            
+
         });
     }
 
@@ -680,7 +592,6 @@ public class CadastroClientes extends javax.swing.JFrame {
     private javax.swing.JTextField TextoNomepf;
     private javax.swing.JButton adicionarFisica;
     private javax.swing.JButton adicionarJuridica;
-    private javax.swing.JButton buttonExcluirF;
     private javax.swing.JButton buttonMenu;
     private javax.swing.JButton buttton2Menu;
     private javax.swing.JLabel cnpjJuridico;
@@ -688,19 +599,14 @@ public class CadastroClientes extends javax.swing.JFrame {
     private javax.swing.JLabel emailFisico;
     private javax.swing.JLabel emailJuridico;
     private javax.swing.JLabel enderecoJuridico;
-    private javax.swing.JButton excluirJuridica;
-    private javax.swing.JTextField excluircnpj;
     private javax.swing.JLabel inscricaoJuridica;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel nomeJuridico;
     private javax.swing.JPanel painelPrincipal;
     private javax.swing.JPanel pessoaFisica;
     private javax.swing.JPanel pessoaJuridica;
     private javax.swing.JButton tabelaClientes;
     private javax.swing.JButton tabelaClientes2;
-    private javax.swing.JTextField textRemoverpf;
     private javax.swing.JTextField textoCNPJ;
     private javax.swing.JTextField textoContatosJuridico;
     private javax.swing.JTextField textoEmailJuridico;

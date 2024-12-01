@@ -117,6 +117,7 @@ public class ClientesDAO implements IClientesCRUD {
     @Override
     public void removerPJ(String cnpjCliente) throws Exception {
         try {
+            // Verifica o ID do cliente a partir do CNPJ
             String selectSql = "SELECT id_cliente FROM pessoa_juridica WHERE cnpj = ?";
             PreparedStatement selectStmt = conexao.prepareStatement(selectSql);
             selectStmt.setString(1, cnpjCliente);
@@ -124,18 +125,21 @@ public class ClientesDAO implements IClientesCRUD {
 
             int idCliente = 0;
             if (rs.next()) {
-                idCliente = rs.getInt("id_cliente");  // Pega o id_cliente da pessoa_fisica
+                idCliente = rs.getInt("id_cliente");
                 System.out.println("ID do Cliente: " + idCliente);
             } else {
-                throw new Exception("CPF não encontrado.");
+                throw new Exception("CNPJ não encontrado."); // Corrige a mensagem de erro
             }
 
+            // Deleta o registro na tabela pessoa_juridica
             String deleteSqlPF = "DELETE FROM pessoa_juridica WHERE cnpj = ?";
             PreparedStatement deleteStmtPF = conexao.prepareStatement(deleteSqlPF);
             deleteStmtPF.setString(1, cnpjCliente);
             deleteStmtPF.executeUpdate();
 
-            System.out.println("Pessoa juridica deletada!");
+            System.out.println("Pessoa jurídica deletada!");
+
+            // Deleta o registro correspondente da tabela clientes
             String deleteSqlCliente = "DELETE FROM clientes WHERE id = ?";
             PreparedStatement deleteStmtCliente = conexao.prepareStatement(deleteSqlCliente);
             deleteStmtCliente.setInt(1, idCliente);
@@ -143,13 +147,14 @@ public class ClientesDAO implements IClientesCRUD {
             System.out.println("Cliente deletado!");
 
         } catch (SQLException e) {
-            throw new Exception("Erro ao excluir cliente: " + e.getMessage());
+            throw new Exception("Erro ao excluir cliente: " + e.getMessage()); // Melhor mensagem de erro
         }
     }
 
     @Override
     public void removerPF(String cpfCliente) throws Exception {
         try {
+            // Verifica o ID do cliente a partir do CPF
             String selectSql = "SELECT id_cliente FROM pessoa_fisica WHERE cpf = ?";
             PreparedStatement selectStmt = conexao.prepareStatement(selectSql);
             selectStmt.setString(1, cpfCliente);
@@ -157,18 +162,21 @@ public class ClientesDAO implements IClientesCRUD {
 
             int idCliente = 0;
             if (rs.next()) {
-                idCliente = rs.getInt("id_cliente");  // Pega o id_cliente da pessoa_fisica
+                idCliente = rs.getInt("id_cliente");
                 System.out.println("ID do Cliente: " + idCliente);
             } else {
-                throw new Exception("CPF não encontrado.");
+                throw new Exception("CPF não encontrado."); // Corrige a mensagem de erro
             }
 
+            // Deleta o registro na tabela pessoa_fisica
             String deleteSqlPF = "DELETE FROM pessoa_fisica WHERE cpf = ?";
             PreparedStatement deleteStmtPF = conexao.prepareStatement(deleteSqlPF);
             deleteStmtPF.setString(1, cpfCliente);
             deleteStmtPF.executeUpdate();
 
-            System.out.println("Pessoa fisica deletada!");
+            System.out.println("Pessoa física deletada!");
+
+            // Deleta o registro correspondente da tabela clientes
             String deleteSqlCliente = "DELETE FROM clientes WHERE id = ?";
             PreparedStatement deleteStmtCliente = conexao.prepareStatement(deleteSqlCliente);
             deleteStmtCliente.setInt(1, idCliente);
@@ -176,7 +184,7 @@ public class ClientesDAO implements IClientesCRUD {
             System.out.println("Cliente deletado!");
 
         } catch (SQLException e) {
-            throw new Exception("Erro ao excluir cliente: " + e.getMessage());
+            throw new Exception("Erro ao excluir cliente: " + e.getMessage()); // Melhor mensagem de erro
         }
     }
 
@@ -235,7 +243,6 @@ public class ClientesDAO implements IClientesCRUD {
             while (rs.next()) {
                 // Criação e preenchimento do cliente
                 Cliente cliente = new Cliente();
-                cliente.setID(Integer.toString(rs.getInt("id_cliente")));
                 cliente.setNome(rs.getString("nome"));
                 cliente.setEndereco(rs.getString("endereco"));
                 cliente.setEmail(rs.getString("email"));

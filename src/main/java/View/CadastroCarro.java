@@ -62,13 +62,8 @@ public class CadastroCarro extends javax.swing.JFrame {
         comboxMarca = new javax.swing.JComboBox<>();
         adicionarModelo = new javax.swing.JButton();
         adicionarMarca = new javax.swing.JButton();
-        removerModelo = new javax.swing.JButton();
-        removerMarca = new javax.swing.JButton();
         comboxAcessorios = new javax.swing.JComboBox<>();
         AdicionarAcess = new javax.swing.JButton();
-        removerAcess = new javax.swing.JButton();
-        cadastroCarro = new javax.swing.JScrollPane();
-        cadastroVeiculos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -169,20 +164,6 @@ public class CadastroCarro extends javax.swing.JFrame {
             }
         });
 
-        removerModelo.setText("Remover");
-        removerModelo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removerModeloActionPerformed(evt);
-            }
-        });
-
-        removerMarca.setText("Remover");
-        removerMarca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removerMarcaActionPerformed(evt);
-            }
-        });
-
         comboxAcessorios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Sistema de navegação (GPS)", "Câmera de ré", "Sensor de estacionamento", "Carregador de celular wireless", "Tapetes personalizados", "Faróis de neblina", "Suporte para celular", "Encosto de cabeça com tela LCD", "Caixa de som ou sis" }));
 
         AdicionarAcess.setText("Adicionar");
@@ -191,8 +172,6 @@ public class CadastroCarro extends javax.swing.JFrame {
                 AdicionarAcessActionPerformed(evt);
             }
         });
-
-        removerAcess.setText("Remover");
 
         javax.swing.GroupLayout painelPrincipalLayout = new javax.swing.GroupLayout(painelPrincipal);
         painelPrincipal.setLayout(painelPrincipalLayout);
@@ -242,17 +221,12 @@ public class CadastroCarro extends javax.swing.JFrame {
                                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(textModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(textAcessorios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(34, 34, 34)
-                        .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(adicionarModelo)
-                            .addComponent(adicionarMarca)
-                            .addComponent(AdicionarAcess))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(removerModelo)
-                            .addComponent(removerMarca)
-                            .addComponent(removerAcess))))
-                .addContainerGap(199, Short.MAX_VALUE))
+                            .addComponent(adicionarMarca)
+                            .addComponent(adicionarModelo)
+                            .addComponent(AdicionarAcess))))
+                .addContainerGap(310, Short.MAX_VALUE))
         );
         painelPrincipalLayout.setVerticalGroup(
             painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,15 +240,13 @@ public class CadastroCarro extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(textModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(adicionarModelo)
-                    .addComponent(removerModelo))
+                    .addComponent(adicionarModelo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(textMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(adicionarMarca)
-                    .addComponent(removerMarca))
+                    .addComponent(adicionarMarca))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -300,8 +272,7 @@ public class CadastroCarro extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(textAcessorios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboxAcessorios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AdicionarAcess)
-                    .addComponent(removerAcess))
+                    .addComponent(AdicionarAcess))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(adicionarButton)
@@ -312,38 +283,13 @@ public class CadastroCarro extends javax.swing.JFrame {
                 .addGap(31, 31, 31))
         );
 
-        cadastroVeiculos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Modelo", "Marca", "Placa", "Chassi", "Patrimonio", "KM", "Data Entrada", "Acessorios"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        cadastroVeiculos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cadastroVeiculosMouseClicked(evt);
-            }
-        });
-        cadastroCarro.setViewportView(cadastroVeiculos);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cadastroCarro)
-                    .addComponent(painelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(painelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -351,9 +297,7 @@ public class CadastroCarro extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(painelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cadastroCarro, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -403,9 +347,7 @@ public class CadastroCarro extends javax.swing.JFrame {
             veiculo.setChassi(chassi);
             veiculo.setPatrimonio(patrimonio);
             veiculo.setKilometragem(kilometragemText);
-            veiculo.setDataEntrada(dataEntrada);
             veiculo.setAcessorios(componentes);
-            DefaultTableModel model = (DefaultTableModel) cadastroVeiculos.getModel();
 
 
             
@@ -473,19 +415,6 @@ public class CadastroCarro extends javax.swing.JFrame {
         textMarca.setText("");
     }//GEN-LAST:event_adicionarMarcaActionPerformed
 
-    private void removerModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerModeloActionPerformed
-      
-
-    }//GEN-LAST:event_removerModeloActionPerformed
-
-    private void removerMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerMarcaActionPerformed
-      
-    }//GEN-LAST:event_removerMarcaActionPerformed
-
-    private void cadastroVeiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cadastroVeiculosMouseClicked
- 
-    }//GEN-LAST:event_cadastroVeiculosMouseClicked
-
     private void textAcessoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textAcessoriosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textAcessoriosActionPerformed
@@ -516,8 +445,6 @@ public class CadastroCarro extends javax.swing.JFrame {
     private javax.swing.JButton alterarButton;
     private javax.swing.JButton buttonLimpar;
     private javax.swing.JButton buttonMenuCarro;
-    private javax.swing.JScrollPane cadastroCarro;
-    private javax.swing.JTable cadastroVeiculos;
     private javax.swing.JComboBox<String> comboxAcessorios;
     private javax.swing.JComboBox<String> comboxMarca;
     private javax.swing.JComboBox<String> comboxModelo;
@@ -532,10 +459,7 @@ public class CadastroCarro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel painelPrincipal;
-    private javax.swing.JButton removerAcess;
     private javax.swing.JButton removerButton;
-    private javax.swing.JButton removerMarca;
-    private javax.swing.JButton removerModelo;
     private javax.swing.JTextField textAcessorios;
     private javax.swing.JTextField textChassi;
     private javax.swing.JTextField textKilometragem;

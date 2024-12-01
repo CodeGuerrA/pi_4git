@@ -6,7 +6,17 @@ package View;
 
 import Connection.ConexaoBD;
 import Persistence.ClientesDAO;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.LineSeparator;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
 import java.awt.BorderLayout;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -101,9 +111,9 @@ public class OrdemServicoview extends javax.swing.JFrame {
         textValor = new javax.swing.JTextField();
         adicionarServico = new javax.swing.JButton();
         removerServico = new javax.swing.JButton();
-        comboxColaborador = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         adicionarColaborador = new javax.swing.JButton();
+        comboxColaborador = new javax.swing.JComboBox<>();
         Pecas = new javax.swing.JPanel();
         labelPecas = new javax.swing.JLabel();
         comboxPecas = new javax.swing.JComboBox<>();
@@ -118,10 +128,6 @@ public class OrdemServicoview extends javax.swing.JFrame {
         escolhaPagamento = new javax.swing.JComboBox<>();
         labelTotal = new javax.swing.JLabel();
         textValorTotal = new javax.swing.JTextField();
-        novoOs = new javax.swing.JButton();
-        salvarOs = new javax.swing.JButton();
-        excluirOs = new javax.swing.JButton();
-        pesquisarOs = new javax.swing.JButton();
         gerarOspdf = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -219,7 +225,7 @@ public class OrdemServicoview extends javax.swing.JFrame {
             }
         });
         panelCliente.add(statusCombox);
-        statusCombox.setBounds(32, 90, 90, 22);
+        statusCombox.setBounds(40, 90, 110, 22);
 
         panelVeiculos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
@@ -337,16 +343,16 @@ public class OrdemServicoview extends javax.swing.JFrame {
 
         removerServico.setText("Remover");
 
-        comboxColaborador.setEditable(true);
+        jLabel2.setText("Colaborador");
+
+        adicionarColaborador.setText("Adicionar");
+
+        comboxColaborador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboxColaborador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboxColaboradorActionPerformed(evt);
             }
         });
-
-        jLabel2.setText("Colaborador");
-
-        adicionarColaborador.setText("Adicionar");
 
         javax.swing.GroupLayout ServicoLayout = new javax.swing.GroupLayout(Servico);
         Servico.setLayout(ServicoLayout);
@@ -360,9 +366,9 @@ public class OrdemServicoview extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(ServicoLayout.createSequentialGroup()
                         .addGroup(ServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(comboxColaborador, 0, 308, Short.MAX_VALUE)
                             .addComponent(labelServico, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboxServicos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(comboxServicos, 0, 308, Short.MAX_VALUE)
+                            .addComponent(comboxColaborador, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(ServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelValor)
@@ -373,7 +379,7 @@ public class OrdemServicoview extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(removerServico))
                             .addComponent(adicionarColaborador))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(241, Short.MAX_VALUE))))
         );
         ServicoLayout.setVerticalGroup(
             ServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,8 +398,8 @@ public class OrdemServicoview extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboxColaborador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(adicionarColaborador))
+                    .addComponent(adicionarColaborador)
+                    .addComponent(comboxColaborador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -501,23 +507,15 @@ public class OrdemServicoview extends javax.swing.JFrame {
                 .addGroup(painelFinalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(escolhaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
 
-        novoOs.setText("Novo");
-
-        salvarOs.setText("Salvar");
-        salvarOs.addActionListener(new java.awt.event.ActionListener() {
+        gerarOspdf.setText("Gerar");
+        gerarOspdf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salvarOsActionPerformed(evt);
+                gerarOspdfActionPerformed(evt);
             }
         });
-
-        excluirOs.setText("Excluir");
-
-        pesquisarOs.setText("Pesquisar");
-
-        gerarOspdf.setText("Gerar");
 
         javax.swing.GroupLayout ordemServicoLayout = new javax.swing.GroupLayout(ordemServico);
         ordemServico.setLayout(ordemServicoLayout);
@@ -532,23 +530,15 @@ public class OrdemServicoview extends javax.swing.JFrame {
                         .addComponent(Servico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(12, 12, 12))
                     .addGroup(ordemServicoLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(novoOs)
-                        .addGap(18, 18, 18)
-                        .addComponent(salvarOs)
-                        .addGap(18, 18, 18)
-                        .addComponent(excluirOs)
-                        .addGap(18, 18, 18)
-                        .addComponent(pesquisarOs)
-                        .addGap(18, 18, 18)
-                        .addComponent(gerarOspdf)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 473, Short.MAX_VALUE))
-                    .addGroup(ordemServicoLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 914, Short.MAX_VALUE)
                         .addGap(5, 5, 5))
                     .addGroup(ordemServicoLayout.createSequentialGroup()
                         .addComponent(painelFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(5, 5, 5)))
+                        .addGap(5, 5, 5))
+                    .addGroup(ordemServicoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(gerarOspdf)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(ordemServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addComponent(Pecas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -568,18 +558,13 @@ public class OrdemServicoview extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(ordemServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ordemServicoLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(painelFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addGroup(ordemServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(novoOs)
-                            .addComponent(salvarOs)
-                            .addComponent(excluirOs)
-                            .addComponent(pesquisarOs)
-                            .addComponent(gerarOspdf)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addComponent(painelFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(5, 5, 5)
+                        .addComponent(gerarOspdf))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout panelScrollLayout = new javax.swing.GroupLayout(panelScroll);
@@ -591,8 +576,8 @@ public class OrdemServicoview extends javax.swing.JFrame {
         panelScrollLayout.setVerticalGroup(
             panelScrollLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelScrollLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ordemServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(ordemServico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -609,15 +594,12 @@ public class OrdemServicoview extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelScroll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void comboxColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboxColaboradorActionPerformed
-    }//GEN-LAST:event_comboxColaboradorActionPerformed
 
     private void textocpfcnpjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textocpfcnpjActionPerformed
         // TODO add your handling code here:
@@ -635,96 +617,229 @@ public class OrdemServicoview extends javax.swing.JFrame {
         buscarCpfCnpj();
     }//GEN-LAST:event_ListasNomesMouseClicked
 
-    private void salvarOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarOsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_salvarOsActionPerformed
-    private void ListarCpfCnpj() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    ListasNomes.setModel(model);
+    private void gerarOspdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerarOspdfActionPerformed
+        // Coletando os dados da interface gráfica
+        String nomeCliente = textoNome.getText();
+        String cpfCnpj = textocpfcnpj.getText();
+        String endereco = textEndereco.getText();
+        String telefone = textTelefones.getText();
+        String email = textEmail.getText();
+        String modeloVeiculo = textModelo.getText();
+        String placaVeiculo = textPlaca.getText();
+        String marcaVeiculo = textMarca.getText();
 
-    // Consulta SQL ajustada para buscar CPF ou CNPJ
-    String readLista = "SELECT COALESCE(pf.cpf, pj.cnpj) AS identificador "
-                     + "FROM clientes c "
-                     + "LEFT JOIN pessoa_fisica pf ON c.id = pf.id_cliente "
-                     + "LEFT JOIN pessoa_juridica pj ON c.id = pj.id_cliente "
-                     + "WHERE COALESCE(pf.cpf, pj.cnpj) LIKE ? "
-                     + "ORDER BY identificador";
+        // Coletando os serviços e peças das tabelas
+        String servicos = coletarServicosDaTabela();
+        String pecas = coletarPecasDaTabela();
 
-    try {
-        // Estabelecendo a conexão com o banco de dados
-        Connection conexao = ConexaoBD.getConexao();
+        String valorTotal = textValorTotal.getText();
 
-        PreparedStatement preparedStatement = conexao.prepareStatement(readLista);
-        preparedStatement.setString(1, textocpfcnpj.getText() + "%"); // Busca com o início do CPF/CNPJ
+        // Criando o arquivo PDF
+        try {
+            // Caminho do arquivo PDF de saída
+            String dest = "OrdemServico_" + nomeCliente + ".pdf";
+            PdfWriter writer = new PdfWriter(dest);
+            com.itextpdf.kernel.pdf.PdfDocument pdf = new com.itextpdf.kernel.pdf.PdfDocument(writer);
+            Document document = new Document(pdf);
 
-        // Executando a consulta
-        ResultSet rs = preparedStatement.executeQuery();
+            document.add(new Paragraph("MECANICA VIANA")
+                    .setBold().setFontSize(20).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("RUA 222 QD 98 LT 46")
+                    .setFontSize(12).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("Próximo à Paróquia São Francisco de Assis")
+                    .setFontSize(12).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("Telefone: (62) 3095-1614 | (62) 3092-8775")
+                    .setFontSize(12).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("Email: mecanicaviana222@hotmail.com")
+                    .setFontSize(12).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("\n"));
 
-        model.clear();
+            // Título do relatório
+            document.add(new Paragraph("Ordem de Serviço")
+                    .setBold().setFontSize(18).setTextAlignment(TextAlignment.CENTER));
 
-        while (rs.next()) {
-            ScrollLista.setVisible(true);
-            ListasNomes.setVisible(true);
-            model.addElement(rs.getString("identificador")); // Adiciona CPF ou CNPJ na lista
+            document.add(new Paragraph("\n"));
+
+            // Informações do cliente
+            document.add(new Paragraph("Cliente: " + nomeCliente)
+                    .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+            document.add(new Paragraph("CPF/CNPJ: " + cpfCnpj)
+                    .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+            document.add(new Paragraph("Endereço: " + endereco)
+                    .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+            document.add(new Paragraph("Telefone: " + telefone)
+                    .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+            document.add(new Paragraph("Email: " + email)
+                    .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+            document.add(new Paragraph("Veículo: " + modeloVeiculo + " - " + marcaVeiculo + " - " + placaVeiculo)
+                    .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+
+            document.add(new Paragraph("\n"));
+
+            // Adicionando uma linha divisória
+            LineSeparator separator = new LineSeparator(new SolidLine());
+            document.add(separator);
+
+            // Detalhes dos serviços
+            document.add(new Paragraph("Serviços:").setBold().setFontSize(14).setTextAlignment(TextAlignment.LEFT));
+            if (!servicos.isEmpty()) {
+                // Exibindo a lista de serviços em uma tabela
+                Table tabelaServicos = new Table(1);
+                tabelaServicos.addCell(new Cell().add(new Paragraph("Serviço")));
+                String[] servicosArray = servicos.split("\n");
+                for (String servico : servicosArray) {
+                    tabelaServicos.addCell(new Cell().add(new Paragraph(servico)));
+                }
+                document.add(tabelaServicos);
+            } else {
+                document.add(new Paragraph("Nenhum serviço selecionado.")
+                        .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+            }
+
+            document.add(new Paragraph("\n"));
+
+            // Detalhes das peças
+            document.add(new Paragraph("Peças:").setBold().setFontSize(14).setTextAlignment(TextAlignment.LEFT));
+            if (!pecas.isEmpty()) {
+                // Exibindo a lista de peças em uma tabela
+                Table tabelaPecas = new Table(1);
+                tabelaPecas.addCell(new Cell().add(new Paragraph("Peça")));
+                String[] pecasArray = pecas.split("\n");
+                for (String peca : pecasArray) {
+                    tabelaPecas.addCell(new Cell().add(new Paragraph(peca)));
+                }
+                document.add(tabelaPecas);
+            } else {
+                document.add(new Paragraph("Nenhuma peça selecionada.")
+                        .setFontSize(12).setTextAlignment(TextAlignment.LEFT));
+            }
+
+            document.add(new Paragraph("\n"));
+
+            // Valor total
+            document.add(new Paragraph("Valor Total: R$ " + valorTotal)
+                    .setBold().setFontSize(14).setTextAlignment(TextAlignment.LEFT));
+
+            // Fechar o documento
+            document.close();
+
+            // Exibindo mensagem de sucesso
+            JOptionPane.showMessageDialog(null, "Ordem de Serviço gerada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao gerar a Ordem de Serviço.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    }//GEN-LAST:event_gerarOspdfActionPerformed
 
-        rs.close();
-        preparedStatement.close();
-    } catch (Exception e) {
-        System.out.println("Erro ao listar CPF/CNPJ: " + e);
-    }
-}
+    private void comboxColaboradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboxColaboradorActionPerformed
+        
+    }//GEN-LAST:event_comboxColaboradorActionPerformed
 
+    private void ListarCpfCnpj() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        ListasNomes.setModel(model);
 
-   private void buscarCpfCnpj() {
-    int linha = ListasNomes.getSelectedIndex();
-
-    if (linha >= 0) {
-        // Consulta SQL para buscar os dados do cliente com base no CPF ou CNPJ
-        String sqlCliente = "SELECT c.id AS id_cliente, c.nome, c.email, c.endereco, c.telefone, "
-                          + "pf.cpf, pj.cnpj, pj.contato, pj.insc_estadual "
-                          + "FROM clientes c "
-                          + "LEFT JOIN pessoa_fisica pf ON c.id = pf.id_cliente "
-                          + "LEFT JOIN pessoa_juridica pj ON c.id = pj.id_cliente "
-                          + "WHERE COALESCE(pf.cpf, pj.cnpj) LIKE ? "
-                          + "ORDER BY COALESCE(pf.cpf, pj.cnpj) LIMIT 1 OFFSET ?";
+        // Consulta SQL ajustada para buscar CPF ou CNPJ
+        String readLista = "SELECT COALESCE(pf.cpf, pj.cnpj) AS identificador "
+                + "FROM clientes c "
+                + "LEFT JOIN pessoa_fisica pf ON c.id = pf.id_cliente "
+                + "LEFT JOIN pessoa_juridica pj ON c.id = pj.id_cliente "
+                + "WHERE COALESCE(pf.cpf, pj.cnpj) LIKE ? "
+                + "ORDER BY identificador";
 
         try {
             // Estabelecendo a conexão com o banco de dados
             Connection conexao = ConexaoBD.getConexao();
 
-            PreparedStatement preparedStatement = conexao.prepareStatement(sqlCliente);
-            preparedStatement.setString(1, textocpfcnpj.getText() + "%"); // CPF ou CNPJ com wildcard
-            preparedStatement.setInt(2, linha); // Offset baseado na linha selecionada
+            PreparedStatement preparedStatement = conexao.prepareStatement(readLista);
+            preparedStatement.setString(1, textocpfcnpj.getText() + "%"); // Busca com o início do CPF/CNPJ
 
+            // Executando a consulta
             ResultSet rs = preparedStatement.executeQuery();
 
-            if (rs.next()) {
-                // Preenchendo os campos com os dados do cliente
-                ScrollLista.setVisible(false);
-                textocpfcnpj.setText(rs.getString("cpf") != null ? rs.getString("cpf") : rs.getString("cnpj"));
-                textEmail.setText(rs.getString("email"));
-                textEndereco.setText(rs.getString("endereco"));
-                textTelefones.setText(rs.getString("telefone"));
+            model.clear();
 
-                // Nome do cliente
-                textoNome.setText(rs.getString("nome"));
-
-                // Dados específicos de pessoa jurídica
-                textContato.setText(rs.getString("contato") != null ? rs.getString("contato") : "");
-                textInsEst.setText(rs.getString("insc_estadual") != null ? rs.getString("insc_estadual") : "");
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Cliente não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+            while (rs.next()) {
+                ScrollLista.setVisible(true);
+                ListasNomes.setVisible(true);
+                model.addElement(rs.getString("identificador")); // Adiciona CPF ou CNPJ na lista
             }
 
             rs.close();
             preparedStatement.close();
         } catch (Exception e) {
-            System.out.println("Erro ao buscar cliente: " + e);
+            System.out.println("Erro ao listar CPF/CNPJ: " + e);
         }
     }
-}
+
+    private String coletarServicosDaTabela() {
+        // Coleta os serviços da tabela e retorna em formato String
+        StringBuilder servicos = new StringBuilder();
+        for (int i = 0; i < tableServicoexecutar.getRowCount(); i++) {
+            servicos.append(tableServicoexecutar.getValueAt(i, 0)).append("\n");
+        }
+        return servicos.toString();
+    }
+
+    private String coletarPecasDaTabela() {
+        // Coleta as peças da tabela e retorna em formato String
+        StringBuilder pecas = new StringBuilder();
+        for (int i = 0; i < tablePecassub.getRowCount(); i++) {
+            pecas.append(tablePecassub.getValueAt(i, 0)).append("\n");
+        }
+        return pecas.toString();
+    }
+
+    private void buscarCpfCnpj() {
+        int linha = ListasNomes.getSelectedIndex();
+
+        if (linha >= 0) {
+            // Consulta SQL para buscar os dados do cliente com base no CPF ou CNPJ
+            String sqlCliente = "SELECT c.id AS id_cliente, c.nome, c.email, c.endereco, c.telefone, "
+                    + "pf.cpf, pj.cnpj, pj.contato, pj.insc_estadual "
+                    + "FROM clientes c "
+                    + "LEFT JOIN pessoa_fisica pf ON c.id = pf.id_cliente "
+                    + "LEFT JOIN pessoa_juridica pj ON c.id = pj.id_cliente "
+                    + "WHERE COALESCE(pf.cpf, pj.cnpj) LIKE ? "
+                    + "ORDER BY COALESCE(pf.cpf, pj.cnpj) LIMIT 1 OFFSET ?";
+
+            try {
+                // Estabelecendo a conexão com o banco de dados
+                Connection conexao = ConexaoBD.getConexao();
+
+                PreparedStatement preparedStatement = conexao.prepareStatement(sqlCliente);
+                preparedStatement.setString(1, textocpfcnpj.getText() + "%"); // CPF ou CNPJ com wildcard
+                preparedStatement.setInt(2, linha); // Offset baseado na linha selecionada
+
+                ResultSet rs = preparedStatement.executeQuery();
+
+                if (rs.next()) {
+                    // Preenchendo os campos com os dados do cliente
+                    ScrollLista.setVisible(false);
+                    textocpfcnpj.setText(rs.getString("cpf") != null ? rs.getString("cpf") : rs.getString("cnpj"));
+                    textEmail.setText(rs.getString("email"));
+                    textEndereco.setText(rs.getString("endereco"));
+                    textTelefones.setText(rs.getString("telefone"));
+
+                    // Nome do cliente
+                    textoNome.setText(rs.getString("nome"));
+
+                    // Dados específicos de pessoa jurídica
+                    textContato.setText(rs.getString("contato") != null ? rs.getString("contato") : "");
+                    textInsEst.setText(rs.getString("insc_estadual") != null ? rs.getString("insc_estadual") : "");
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cliente não encontrado!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+
+                rs.close();
+                preparedStatement.close();
+            } catch (Exception e) {
+                System.out.println("Erro ao buscar cliente: " + e);
+            }
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -789,7 +904,6 @@ public class OrdemServicoview extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboxPecas;
     private javax.swing.JComboBox<String> comboxServicos;
     private javax.swing.JComboBox<String> escolhaPagamento;
-    private javax.swing.JButton excluirOs;
     private javax.swing.JButton gerarOspdf;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -814,16 +928,13 @@ public class OrdemServicoview extends javax.swing.JFrame {
     private javax.swing.JLabel labelTotal;
     private javax.swing.JLabel labelValor;
     private javax.swing.JLabel labelVeiculos;
-    private javax.swing.JButton novoOs;
     private javax.swing.JPanel ordemServico;
     private javax.swing.JPanel painelFinal;
     private javax.swing.JPanel panelCliente;
     private javax.swing.JPanel panelNome;
     private javax.swing.JPanel panelScroll;
     private javax.swing.JPanel panelVeiculos;
-    private javax.swing.JButton pesquisarOs;
     private javax.swing.JButton removerServico;
-    private javax.swing.JButton salvarOs;
     private javax.swing.JSpinner spinnerPecas;
     private javax.swing.JComboBox<String> statusCombox;
     private javax.swing.JTable tablePecassub;
