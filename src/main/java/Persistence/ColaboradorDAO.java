@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ColaboradorDAO implements IColaboradorCRUD {
 
-    private Connection conexao = null;
+    private Connection conexao;
 
     public ColaboradorDAO() throws Exception {
         conexao = ConexaoBD.getConexao();
@@ -55,10 +55,10 @@ public class ColaboradorDAO implements IColaboradorCRUD {
     }
 
     @Override
-    public void deleteColaboradorById(String id) throws Exception {
+    public void deleteColaboradorById(int id) throws Exception {
         String sql = "DELETE FROM funcionario WHERE id = ?";
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
-            preparedStatement.setString(1, String.valueOf(id));
+            preparedStatement.setInt(1, id);
             int rowsDeleted = preparedStatement.executeUpdate();
             if (rowsDeleted > 0) {
                 System.out.println("Colaborador removido com sucesso!");
@@ -70,12 +70,12 @@ public class ColaboradorDAO implements IColaboradorCRUD {
         }
     }
 
-    public static void selectColaborador(Connection conexao,HashtableColaboradorController repositorioColaborador) throws SQLException {
+    public static void selectColaborador(Connection conexao, HashtableColaboradorController repositorioColaborador) throws SQLException {
         // Limpa o repositório de colaboradores antes de adicionar novos
         repositorioColaborador.clear();
 
         // Comando SQL para selecionar apenas o nome dos colaboradores
-        String sql = "SELECT c.nome FROM funcionario c";
+        String sql = "SELECT c.id, c.nome FROM funcionario c";
 
         // A conexão com o banco de dados deve ser fornecida de alguma forma, por exemplo:
         // Connection conexao = DriverManager.getConnection(...);
@@ -85,6 +85,7 @@ public class ColaboradorDAO implements IColaboradorCRUD {
                 // Criação de um novo objeto Colaborador
                 Colaborador colaborador = new Colaborador();
                 // Preenche apenas o nome do colaborador
+                colaborador.setId(rs.getString("id"));
                 colaborador.setNome(rs.getString("nome"));
 
                 // Adiciona o colaborador ao repositório

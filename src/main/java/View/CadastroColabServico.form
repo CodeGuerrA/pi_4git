@@ -54,14 +54,25 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="LabelNome" min="-2" max="-2" attributes="0"/>
-                          <Component id="textNome" alignment="0" max="32767" attributes="0"/>
+                          <Component id="textNomeServico" alignment="0" max="32767" attributes="0"/>
                           <Component id="LabelPreço" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="textPreco" alignment="0" pref="188" max="32767" attributes="0"/>
+                          <Component id="textPrecoServico" alignment="0" pref="188" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="buttonAdicionarServico" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="buttonAtualizarServico" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-                      <Component id="buttonAdicionarServico" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="buttonRemoverServico" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="textRemoverServico" alignment="0" min="-2" pref="184" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="0" min="-2" pref="62" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="buttonRemoverServico" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="atualizarTabelaServico" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -69,19 +80,28 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="49" max="32767" attributes="0"/>
-                      <Component id="LabelNome" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="43" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="LabelNome" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="textNome" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="textNomeServico" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textRemoverServico" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="LabelPreço" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="textPrecoServico" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="textPreco" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonAdicionarServico" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonRemoverServico" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonAtualizarServico" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="atualizarTabelaServico" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" min="-2" pref="433" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -132,16 +152,19 @@
                 <Property name="text" type="java.lang.String" value="Nome"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="textNome">
+            <Component class="javax.swing.JTextField" name="textNomeServico">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textNomeServicoActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="LabelPre&#xe7;o">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Pre&#xe7;o"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="textPreco">
+            <Component class="javax.swing.JTextField" name="textPrecoServico">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textPrecoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textPrecoServicoActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="buttonAdicionarServico">
@@ -158,6 +181,29 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRemoverServicoActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="textRemoverServico">
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Remover"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="buttonAtualizarServico">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Atualizar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAtualizarServicoActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="atualizarTabelaServico">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Refresh"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="atualizarTabelaServicoActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -232,7 +278,8 @@
                 <Component class="javax.swing.JTable" name="tableColaborador">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="1" rowCount="0">
+                      <Table columnCount="2" rowCount="0">
+                        <Column editable="true" title="ID" type="java.lang.Object"/>
                         <Column editable="true" title="Nome" type="java.lang.Object"/>
                       </Table>
                     </Property>
