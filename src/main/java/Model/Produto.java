@@ -21,7 +21,7 @@ public class Produto {
     private String descricao;
     private double quantidade;
     private double precoUnitario;
-    private double precoFinal;
+    
     
     public Produto(){
         this.id = gerarID();
