@@ -18,9 +18,10 @@ public class Produto {
          
     private String id;
     private String nome;
+    private String descricao;
     private double quantidade;
     private double precoUnitario;
-    private double precoFinal;
+    
     
     public Produto(){
         this.id = gerarID();
@@ -31,7 +32,7 @@ public class Produto {
         this.nome = nome;
         this.quantidade = quantidade;
         this.precoUnitario = precoUnitario;
-        this.precoFinal = precoFinal;
+        this.descricao = descricao;
     }
     
     private String gerarID() {
@@ -70,11 +71,11 @@ public class Produto {
         this.precoUnitario = precoUnitario;
     }
 
-    public double getPrecoFinal() {
+    public double getDescricao() {
         return precoFinal;
     }
 
-    public void setPrecoFinal(double precoFinal) {
-        this.precoFinal = precoFinal;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }
