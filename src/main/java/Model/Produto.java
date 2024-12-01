@@ -1,43 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Model;
 
 import java.util.UUID;
+
 /**
  *
  * @author Diagramador - Arena
  */
 public class Produto {
 
-         
     private String id;
     private String nome;
+    private String descricao;
     private double quantidade;
     private double precoUnitario;
-    private double precoFinal;
-    
-    public Produto(){
+
+    public Produto() {
         this.id = gerarID();
     }
-    
+
     public Produto(String id, String nome) {
         this.id = id;
         this.nome = nome;
         this.quantidade = quantidade;
         this.precoUnitario = precoUnitario;
-        this.precoFinal = precoFinal;
+        this.descricao = descricao;
     }
-    
+
     private String gerarID() {
         return UUID.randomUUID().toString();
     }
-    
+
     public String getId() {
         return id;
     }
@@ -70,11 +62,11 @@ public class Produto {
         this.precoUnitario = precoUnitario;
     }
 
-    public double getPrecoFinal() {
-        return precoFinal;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setPrecoFinal(double precoFinal) {
-        this.precoFinal = precoFinal;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }
