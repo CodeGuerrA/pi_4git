@@ -72,7 +72,7 @@ public class Produto {
     }
 
     public double getDescricao() {
-        return precoFinal;
+        return descricao;
     }
 
     public void setDescricao(String descricao) {
