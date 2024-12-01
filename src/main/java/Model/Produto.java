@@ -70,12 +70,13 @@ public class Produto {
     public void setPrecoUnitario(double precoUnitario) {
         this.precoUnitario = precoUnitario;
     }
-
-    public double getDescricao() {
+    
+    public String getDescricao() {
         return descricao;
     }
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
 }
