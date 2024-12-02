@@ -95,6 +95,8 @@
                           <Component id="adicionarButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="buttonMenuCarro" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="buttonTabela" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="545" max="32767" attributes="0"/>
@@ -149,6 +151,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="adicionarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="buttonMenuCarro" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="buttonTabela" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               </Group>
@@ -263,6 +266,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AdicionarAcessActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonTabela">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tabela"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonTabelaActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

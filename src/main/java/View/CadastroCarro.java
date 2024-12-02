@@ -28,9 +28,11 @@ public class CadastroCarro extends javax.swing.JFrame {
 //Esta faltando alguns metodos porem esta quase pronto essa classe: Não esquecer de termina ele segunda e começar o Posse
 
     private Principal principal;
+    private final ConsultaVeiculos listaVeiculos;
 
     public CadastroCarro(Principal principal) {
         initComponents();
+        listaVeiculos = new ConsultaVeiculos();
         this.principal = principal;
         try {
             preencherComboBoxMarcas(); // Chama o método que preenche as ComboBoxes
@@ -64,6 +66,7 @@ public class CadastroCarro extends javax.swing.JFrame {
         comboxModelo = new javax.swing.JComboBox<>();
         comboxMarca = new javax.swing.JComboBox<>();
         AdicionarAcess = new javax.swing.JButton();
+        buttonTabela = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -126,6 +129,13 @@ public class CadastroCarro extends javax.swing.JFrame {
             }
         });
 
+        buttonTabela.setText("Tabela");
+        buttonTabela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonTabelaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout painelPrincipalLayout = new javax.swing.GroupLayout(painelPrincipal);
         painelPrincipal.setLayout(painelPrincipalLayout);
         painelPrincipalLayout.setHorizontalGroup(
@@ -163,7 +173,9 @@ public class CadastroCarro extends javax.swing.JFrame {
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
                         .addComponent(adicionarButton)
                         .addGap(18, 18, 18)
-                        .addComponent(buttonMenuCarro)))
+                        .addComponent(buttonMenuCarro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonTabela)))
                 .addContainerGap(545, Short.MAX_VALUE))
         );
         painelPrincipalLayout.setVerticalGroup(
@@ -205,7 +217,8 @@ public class CadastroCarro extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(adicionarButton)
-                    .addComponent(buttonMenuCarro))
+                    .addComponent(buttonMenuCarro)
+                    .addComponent(buttonTabela))
                 .addGap(31, 31, 31))
         );
 
@@ -312,6 +325,11 @@ public class CadastroCarro extends javax.swing.JFrame {
 
     }//GEN-LAST:event_AdicionarAcessActionPerformed
 
+    private void buttonTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTabelaActionPerformed
+       listaVeiculos.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_buttonTabelaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -326,6 +344,7 @@ public class CadastroCarro extends javax.swing.JFrame {
     private javax.swing.JButton AdicionarAcess;
     private javax.swing.JButton adicionarButton;
     private javax.swing.JButton buttonMenuCarro;
+    private javax.swing.JButton buttonTabela;
     private javax.swing.JComboBox<String> comboxMarca;
     private javax.swing.JComboBox<String> comboxModelo;
     private javax.swing.JLabel identidade;

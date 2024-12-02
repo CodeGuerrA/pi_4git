@@ -4,6 +4,8 @@
  */
 package View;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -14,12 +16,22 @@ public class Principal extends javax.swing.JFrame {
 
     private CadastroClientes cadastroClientes;
     private CadastroCarro cadastroCarro;
+   private CadastroColabServico cadastroColabServico;
+   private CadastraProdutos cadastraProdutos;
+   private OrdemServicoview ordemServicoview;
 
     public Principal() {
         initComponents();
-        // Passando 'this' (referência para a instância atual de Principal) para o CadastroClientes
+        try {
+            // Passando 'this' (referência para a instância atual de Principal) para o CadastroClientes
+            ordemServicoview = new OrdemServicoview(this);
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        cadastraProdutos = new CadastraProdutos(this);
         cadastroClientes = new CadastroClientes(this);
         cadastroCarro = new CadastroCarro(this);
+        cadastroColabServico = new CadastroColabServico(this);
     }
 
     /**
@@ -33,7 +45,9 @@ public class Principal extends javax.swing.JFrame {
 
         CadastroCliente = new javax.swing.JButton();
         CadastroCarro = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        buttonColabServ = new javax.swing.JButton();
+        buttonCadastroProd = new javax.swing.JButton();
+        buttonOS = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -51,20 +65,45 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
+        buttonColabServ.setText("Cadastro Colaborador");
+        buttonColabServ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonColabServActionPerformed(evt);
+            }
+        });
+
+        buttonCadastroProd.setText("Cadastro Produto");
+        buttonCadastroProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCadastroProdActionPerformed(evt);
+            }
+        });
+
+        buttonOS.setText("Ordem Serviço");
+        buttonOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOSActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(CadastroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(58, 58, 58)
-                        .addComponent(CadastroCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(CadastroCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonColabServ))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(CadastroCarro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buttonCadastroProd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addComponent(buttonOS)))
                 .addContainerGap(76, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -74,9 +113,13 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CadastroCliente)
                     .addComponent(CadastroCarro))
-                .addGap(42, 42, 42)
-                .addComponent(jButton1)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonColabServ)
+                    .addComponent(buttonCadastroProd))
+                .addGap(54, 54, 54)
+                .addComponent(buttonOS)
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         pack();
@@ -90,6 +133,18 @@ public class Principal extends javax.swing.JFrame {
     private void CadastroCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadastroCarroActionPerformed
         cadastroCarro.setVisible(true);
     }//GEN-LAST:event_CadastroCarroActionPerformed
+
+    private void buttonColabServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonColabServActionPerformed
+        cadastroColabServico.setVisible(true);
+    }//GEN-LAST:event_buttonColabServActionPerformed
+
+    private void buttonCadastroProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastroProdActionPerformed
+       cadastraProdutos.setVisible(true);
+    }//GEN-LAST:event_buttonCadastroProdActionPerformed
+
+    private void buttonOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOSActionPerformed
+        ordemServicoview.setVisible(true);
+    }//GEN-LAST:event_buttonOSActionPerformed
 
     /**
      * @param args the command line arguments
@@ -129,6 +184,8 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CadastroCarro;
     private javax.swing.JButton CadastroCliente;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton buttonCadastroProd;
+    private javax.swing.JButton buttonColabServ;
+    private javax.swing.JButton buttonOS;
     // End of variables declaration//GEN-END:variables
 }

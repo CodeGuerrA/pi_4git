@@ -45,7 +45,7 @@ public class ConsultaVeiculos extends javax.swing.JFrame {
         buttonBuscar = new javax.swing.JButton();
         buttonRefresh = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cadastroVeiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

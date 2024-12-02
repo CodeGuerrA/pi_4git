@@ -20,15 +20,17 @@ import javax.swing.table.DefaultTableModel;
  * @author Guerra
  */
 public class CadastraProdutos extends javax.swing.JFrame {
-    
+
     private final HashtableProdutoController repositoProdutoController;
-    
-    public CadastraProdutos() {
+    private final Principal principal; // Variável para manter referência do menu principal
+
+    public CadastraProdutos(Principal principal) {
+        this.principal = principal;
         repositoProdutoController = new HashtableProdutoController();
         initComponents();
         carregarProdutoNaTabela();
     }
-    
+
     private void carregarProdutoNaTabela() {
         try (Connection conexao = ConexaoBD.getConexao()) {
             if (conexao != null && !conexao.isClosed()) {
@@ -42,7 +44,10 @@ public class CadastraProdutos extends javax.swing.JFrame {
                     Produto colaborador = produtoEnum.nextElement();
                     model.addRow(new Object[]{
                         colaborador.getId(),
-                        colaborador.getNome()
+                        colaborador.getNome(),
+                        colaborador.getDescricao(),
+                        colaborador.getQuantidade(),
+                        colaborador.getPrecoUnitario()
                     });
                 }
             }
@@ -52,7 +57,7 @@ public class CadastraProdutos extends javax.swing.JFrame {
             System.err.println("Erro geral: " + e.getMessage());
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -75,7 +80,7 @@ public class CadastraProdutos extends javax.swing.JFrame {
         textID = new javax.swing.JTextField();
         recarregarTabela = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -230,12 +235,12 @@ public class CadastraProdutos extends javax.swing.JFrame {
             // Insere o produto no banco de dados
             ProdutoDAO produtodao = new ProdutoDAO();
             produtodao.insertProduto(produto);
-            
+
             carregarProdutoNaTabela();
-            
+
             JOptionPane.showMessageDialog(this, "Produto adicionado com sucesso!",
                     "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            
+
             textNome.setText("");
             textDescricao.setText("");
             textQuantidade.setText("");
@@ -262,7 +267,7 @@ public class CadastraProdutos extends javax.swing.JFrame {
                     "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             carregarProdutoNaTabela();
             textID.setText("");
-            
+
         } catch (Exception e) {
             e.printStackTrace();  // Exibe o erro caso algo dê errado
             JOptionPane.showMessageDialog(this, "Erro ao adicionar Serviço : " + e.getMessage(),
@@ -284,7 +289,7 @@ public class CadastraProdutos extends javax.swing.JFrame {
             }
             Double i = Double.parseDouble(quantidadeAlterar);
             Double j = Double.parseDouble(precoUnitarioAlterar);
-            
+
             Produto produto = new Produto();
             produto.setId(id);  // Setar o ID para localizar o registro
             produto.setNome(nomealterar);
@@ -296,7 +301,7 @@ public class CadastraProdutos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Produto atualizado com sucesso!",
                     "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             carregarProdutoNaTabela();
-            
+
             textID.setText("");
             textNome.setText("");
             textDescricao.setText("");
@@ -318,35 +323,10 @@ public class CadastraProdutos extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastraProdutos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastraProdutos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastraProdutos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastraProdutos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+        java.awt.EventQueue.invokeLater(() -> {
+            Principal principal = new Principal();
+            principal.setVisible(true);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastraProdutos().setVisible(true);
-            }
         });
     }
 

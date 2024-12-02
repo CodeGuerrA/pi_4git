@@ -29,13 +29,15 @@ public class CadastroColabServico extends javax.swing.JFrame {
 
     private final HashtableColaboradorController repositoColaboradorController;
     private final HashtableServicoController servicoController;
+    private final Principal principal; // Variável para manter referência do menu principal
 
     /**
      * Creates new form cadastroColaborador
      */
-    public CadastroColabServico() {
+    public CadastroColabServico(Principal principal) {
         repositoColaboradorController = new HashtableColaboradorController();
         servicoController = new HashtableServicoController();
+        this.principal = principal;
 
         initComponents();
         carregarColaboradoresNaTabela();
@@ -134,7 +136,7 @@ public class CadastroColabServico extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         textRemoverColaborador = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cadastroServico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -339,7 +341,7 @@ public class CadastroColabServico extends javax.swing.JFrame {
             Tarefas servico = new Tarefas();
             servico.setNome(nome);
             servico.setPreco(i);
-            if (nome.isEmpty() || preco.isEmpty() ) {
+            if (nome.isEmpty() || preco.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.",
                         "Erro", JOptionPane.ERROR_MESSAGE);
                 return; // Encerra o método se houver campos vazios
@@ -472,37 +474,10 @@ public class CadastroColabServico extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroColabServico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroColabServico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroColabServico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroColabServico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+        java.awt.EventQueue.invokeLater(() -> {
+            Principal principal = new Principal();
+            principal.setVisible(true);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastroColabServico().setVisible(true);
-            }
         });
     }
 
