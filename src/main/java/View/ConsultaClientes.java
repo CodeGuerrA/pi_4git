@@ -59,7 +59,7 @@ public class ConsultaClientes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "CPF/CNPJ", "Telefone", "Endereço", "E-mail", "Contatos", "Inscrição Estadual"
+                "ID", "Nome", "CPF/CNPJ", "Telefone", "Endereço", "E-mail", "Contatos", "Inscrição Estadual"
             }
         ));
         jScrollPane1.setViewportView(tabelaClientes);
@@ -165,6 +165,7 @@ private void carregarClientesNaTabela() {
                 while (clientesEnum.hasMoreElements()) {
                     Cliente cliente = clientesEnum.nextElement();
                     model.addRow(new Object[]{
+                        cliente.getId(), // ID do cliente
                         cliente.getNome(),
                         cliente.getCNPJ() != null && !cliente.getCNPJ().isEmpty() ? cliente.getCNPJ() : cliente.getCPF(),
                         cliente.getTelefones(),
@@ -220,37 +221,39 @@ private void carregarClientesNaTabela() {
     }//GEN-LAST:event_buttonRefreshActionPerformed
 
     private void buttonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverActionPerformed
- try {
-    String input = textRemover.getText().trim(); // Mantém a pontuação
-    ClientesDAO clientesDAO = new ClientesDAO();
+        try {
+            String input = textRemover.getText().trim(); // Mantém a pontuação
+            ClientesDAO clientesDAO = new ClientesDAO();
 
-    if (input.length() == 18) { //tamanho do cnpj com os caracteres especiais
-        clientesDAO.removerPJ(input);
-        JOptionPane.showMessageDialog(this, "Cliente (Pessoa Jurídica) removido com sucesso!",
-                "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-    } else if (input.length() == 14) { //tamanho do cpf com os caracteres especiais
-        clientesDAO.removerPF(input);
-        JOptionPane.showMessageDialog(this, "Cliente (Pessoa Física) removido com sucesso!",
-                "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        JOptionPane.showMessageDialog(this, "O valor informado não é um CPF ou CNPJ válido.",
-                "Erro", JOptionPane.ERROR_MESSAGE);
-        textRemover.setText("");
-    }
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(this, "Erro ao remover cliente: " + e.getMessage(),
-            "Erro", JOptionPane.ERROR_MESSAGE);
-    textRemover.setText("");
-}
+            if (input.length() == 18) { //tamanho do cnpj com os caracteres especiais
+                clientesDAO.removerPJ(input);
+                JOptionPane.showMessageDialog(this, "Cliente (Pessoa Jurídica) removido com sucesso!",
+                        "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } else if (input.length() == 14) { //tamanho do cpf com os caracteres especiais
+                clientesDAO.removerPF(input);
+                JOptionPane.showMessageDialog(this, "Cliente (Pessoa Física) removido com sucesso!",
+                        "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "O valor informado não é um CPF ou CNPJ válido.",
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+                textRemover.setText("");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao remover cliente: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+            textRemover.setText("");
+        }
     }//GEN-LAST:event_buttonRemoverActionPerformed
 // Método para atualizar a tabela com os dados do cliente encontrado
 
+ // Método para atualizar a tabela com os dados do cliente encontrado
     private void atualizarTabelaCliente(Cliente cliente) {
         // Limpa a tabela antes de adicionar o cliente
         DefaultTableModel model = (DefaultTableModel) tabelaClientes.getModel();
         model.setRowCount(0);  // Limpa todas as linhas da tabela
 
         model.addRow(new Object[]{
+            cliente.getId(),  // ID do cliente
             cliente.getNome(),
             cliente.getCNPJ() != null && !cliente.getCNPJ().isEmpty() ? cliente.getCNPJ() : cliente.getCPF(),
             cliente.getTelefones(),

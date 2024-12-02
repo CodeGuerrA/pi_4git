@@ -4,17 +4,28 @@
  */
 package View;
 
+import Connection.ConexaoBD;
+import Controller.HashtableVeiculoController;
+import Model.Cliente;
+import Model.Veiculos;
+import static Persistence.VeiculosDAO.selectVeiculos;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Enumeration;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Guerra
  */
 public class ConsultaVeiculos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ConsultaVeiculos
-     */
+    private HashtableVeiculoController repositorio;
+
     public ConsultaVeiculos() {
+        repositorio = new HashtableVeiculoController();
         initComponents();
+        carregarVeiculosNaTabela();
     }
 
     /**
@@ -33,9 +44,6 @@ public class ConsultaVeiculos extends javax.swing.JFrame {
         textBusca = new javax.swing.JTextField();
         buttonBuscar = new javax.swing.JButton();
         buttonRefresh = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        textRemover = new javax.swing.JTextField();
-        buttonRemover = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,11 +52,11 @@ public class ConsultaVeiculos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Modelo", "Marca", "Placa", "Chassi", "Patrimonio", "KM", "Data Entrada", "Acessorios"
+                "Modelo", "Marca", "Placa", "Chassi", "Patrimonio", "KM", "Acessorios"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -65,12 +73,18 @@ public class ConsultaVeiculos extends javax.swing.JFrame {
         jLabel1.setText("Buscar Veiculos");
 
         buttonBuscar.setText("Buscar");
+        buttonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBuscarActionPerformed(evt);
+            }
+        });
 
         buttonRefresh.setText("Refresh");
-
-        jLabel2.setText("Remover");
-
-        buttonRemover.setText("Remover");
+        buttonRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRefreshActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -86,11 +100,6 @@ public class ConsultaVeiculos extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(buttonRefresh)
                             .addComponent(buttonBuscar))))
-                .addGap(191, 191, 191)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(textRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonRemover))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(cadastroCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 1164, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -100,18 +109,13 @@ public class ConsultaVeiculos extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(79, 79, 79)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonBuscar)
-                    .addComponent(textRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonRefresh)
-                    .addComponent(buttonRemover))
+                .addComponent(buttonRefresh)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(cadastroCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -131,10 +135,93 @@ public class ConsultaVeiculos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+private void carregarVeiculosNaTabela() {
+        try (Connection conexao = ConexaoBD.getConexao()) {
+            if (conexao != null && !conexao.isClosed()) {
+                repositorio.clear(); // Limpa o repositório antes de carregar os veículos
+
+                // Chama o método selectVeiculos para carregar os dados
+                selectVeiculos(conexao, repositorio);
+
+                // Obtém o modelo da tabela e limpa as linhas
+                DefaultTableModel model = (DefaultTableModel) cadastroVeiculos.getModel();
+                model.setRowCount(0);
+
+                // Preenche a tabela com os veículos do repositório
+                Enumeration<Veiculos> veiculosEnum = repositorio.listarTodosVeiculos().elements();
+                while (veiculosEnum.hasMoreElements()) {
+                    Veiculos veiculo = veiculosEnum.nextElement();
+                    model.addRow(new Object[]{
+                        veiculo.getModelo(),
+                        veiculo.getMarca(),
+                        veiculo.getPlaca(),
+                        veiculo.getChassi(),
+                        veiculo.getPatrimonio(),
+                        veiculo.getKilometragem(),
+                        veiculo.getAcessorios()
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao carregar os veículos: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erro geral: " + e.getMessage());
+        }
+    }
+
 
     private void cadastroVeiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cadastroVeiculosMouseClicked
 
     }//GEN-LAST:event_cadastroVeiculosMouseClicked
+
+    private void buttonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarActionPerformed
+        try (Connection conexao = ConexaoBD.getConexao()) {
+            if (conexao != null && !conexao.isClosed()) {
+                repositorio.clear(); // Limpa o repositório antes de carregar os veículos
+
+                // Carrega todos os veículos na tabela
+                selectVeiculos(conexao, repositorio);
+
+                String placa = textBusca.getText().trim(); // Obtém a placa digitada no campo de busca
+                Veiculos veiculoEncontrado = repositorio.buscarVeiculosPelaPlaca(placa);
+
+                if (veiculoEncontrado != null) {
+                    atualizarTabelaVeiculo(veiculoEncontrado); // Atualiza a tabela com o veículo encontrado
+                } else {
+                    System.out.println("Veículo não encontrado: " + placa);
+                    limparTabela(); // Limpa a tabela caso o veículo não seja encontrado
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao carregar os veículos: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erro geral: " + e.getMessage());
+        }
+    }//GEN-LAST:event_buttonBuscarActionPerformed
+    private void limparTabela() {
+    DefaultTableModel model = (DefaultTableModel) cadastroVeiculos.getModel();
+    model.setRowCount(0);  // Limpa todas as linhas da tabela
+}
+
+
+private void atualizarTabelaVeiculo(Veiculos veiculo) {
+    DefaultTableModel model = (DefaultTableModel) cadastroVeiculos.getModel();
+    model.setRowCount(0);  // Limpa a tabela antes de adicionar o veículo encontrado
+
+    // Adiciona o veículo encontrado na tabela
+    model.addRow(new Object[]{
+        veiculo.getModelo(),
+        veiculo.getMarca(),
+        veiculo.getPlaca(),
+        veiculo.getChassi(),
+        veiculo.getPatrimonio(),
+        veiculo.getKilometragem(),
+        veiculo.getAcessorios()
+    });
+}
+    private void buttonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRefreshActionPerformed
+       carregarVeiculosNaTabela();
+    }//GEN-LAST:event_buttonRefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,13 +261,10 @@ public class ConsultaVeiculos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonBuscar;
     private javax.swing.JButton buttonRefresh;
-    private javax.swing.JButton buttonRemover;
     private javax.swing.JScrollPane cadastroCarro;
     private javax.swing.JTable cadastroVeiculos;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField textBusca;
-    private javax.swing.JTextField textRemover;
     // End of variables declaration//GEN-END:variables
 }

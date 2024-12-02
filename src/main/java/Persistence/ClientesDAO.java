@@ -231,6 +231,7 @@ public class ClientesDAO implements IClientesCRUD {
     }
 
     public static void selectClientes(Connection conexao, HashtableClienteController repositorio) throws SQLException {
+        // Limpa o repositório antes de adicionar novos clientes
         repositorio.clear();
 
         String sql = "SELECT c.id AS id_cliente, c.nome, c.endereco, c.email, c.telefone, c.telefone2, "
@@ -243,10 +244,11 @@ public class ClientesDAO implements IClientesCRUD {
             while (rs.next()) {
                 // Criação e preenchimento do cliente
                 Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("id_cliente"));  // Corrigido para "id_cliente"
                 cliente.setNome(rs.getString("nome"));
                 cliente.setEndereco(rs.getString("endereco"));
                 cliente.setEmail(rs.getString("email"));
-                cliente.setTelefones(rs.getString("telefone"));
+                cliente.setTelefones(rs.getString("telefone") + (rs.getString("telefone2") != null ? ", " + rs.getString("telefone2") : ""));
                 cliente.setCPF(rs.getString("cpf"));
                 cliente.setCNPJ(rs.getString("cnpj"));
                 cliente.setContatos(rs.getString("contato"));
@@ -254,7 +256,6 @@ public class ClientesDAO implements IClientesCRUD {
 
                 // Adiciona o cliente ao repositório
                 repositorio.adicionarCliente(cliente);
-
             }
         } catch (SQLException e) {
             throw new SQLException("Erro ao carregar os clientes: " + e.getMessage());

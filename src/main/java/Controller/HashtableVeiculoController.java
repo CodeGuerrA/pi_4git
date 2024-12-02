@@ -7,22 +7,22 @@ import java.util.Hashtable;
 
 /**
  *
- * @author Guerra
- */
+ 
+@author Guerra*/
 public class HashtableVeiculoController implements VeiculoService {
 
     private final Hashtable<String, Veiculos> veiculos = new Hashtable<>();
     private final Hashtable<String, Cliente> clientes = new Hashtable<>(); // Repositório de clientes
 
     @Override
-    public void adicionarVeiculo(String placa, Veiculos veiculo) {
+    public void adicionarVeiculo(Veiculos veiculo) {
         // Verifica se o veículo com a mesma placa já existe
-        if (buscarVeiculosPelaPlaca(placa) != null) {  
-            System.out.println("Veículo com a placa " + placa + " já existe!");
+        if (buscarVeiculosPelaPlaca(veiculo.getPlaca()) != null) {
+            System.out.println("Veículo com a placa " + veiculo.getPlaca() + " já existe!");
         } else {
             // Se o veículo não existe, adiciona no repositório
-            veiculos.put(placa, veiculo);  //
-            System.out.println("Veículo com a placa " + placa + " adicionado com sucesso.");
+            veiculos.put(veiculo.getPlaca(), veiculo);  //
+            System.out.println("Veículo com a placa " + veiculo.getPlaca() + " adicionado com sucesso.");
         }
     }
 
@@ -37,4 +37,9 @@ public class HashtableVeiculoController implements VeiculoService {
     public Veiculos buscarVeiculosPelaPlaca(String placa) {
         return veiculos.get(placa);
     }
+
+    public void clear() {
+        veiculos.clear();  // Corrigido para 'clientes.clear()'
+    }
+
 }
