@@ -8,11 +8,14 @@ import Controller.HashtableClienteController;
 import Controller.HashtableVeiculoController;
 import Model.Cliente;
 import Model.Veiculos;
+import Persistence.VeiculosDAO;
 import Service.ClienteService;
 import Util.Validar;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,6 +31,12 @@ public class CadastroCarro extends javax.swing.JFrame {
     public CadastroCarro(Principal principal) {
         initComponents();
         this.principal = principal;
+        try {
+            preencherComboBoxMarcas(); // Chama o método que preenche as ComboBoxes
+            preencherComboBoxModelos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao inicializar combos: " + e.getMessage());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -128,14 +137,14 @@ public class CadastroCarro extends javax.swing.JFrame {
 
         escolhaData.setDateFormatString("dd/MM/yyyy");
 
-        comboxModelo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Corolla", "Mustang", "Civic", "Camaro", "Série 3", "A4", "Golf", "Altima", "C-Class", "Wrangler" }));
+        comboxModelo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione..." }));
         comboxModelo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboxModeloActionPerformed(evt);
             }
         });
 
-        comboxMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Toyota", "Ford", "Honda", "Chevrolet", "BMW", "Audi", "Volkswagen", "Nissan", "Mercedes-Benz", "Jeep" }));
+        comboxMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione..." }));
         comboxMarca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboxMarcaActionPerformed(evt);
@@ -156,7 +165,7 @@ public class CadastroCarro extends javax.swing.JFrame {
             }
         });
 
-        comboxAcessorios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Sistema de navegação (GPS)", "Câmera de ré", "Sensor de estacionamento", "Carregador de celular wireless", "Tapetes personalizados", "Faróis de neblina", "Suporte para celular", "Encosto de cabeça com tela LCD", "Caixa de som ou sis" }));
+        comboxAcessorios.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione..." }));
 
         AdicionarAcess.setText("Adicionar");
         AdicionarAcess.addActionListener(new java.awt.event.ActionListener() {
@@ -340,7 +349,29 @@ public class CadastroCarro extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_adicionarButtonActionPerformed
+    private void preencherComboBoxMarcas() throws Exception {
+        try {
+            VeiculosDAO dao = new VeiculosDAO();
+            List<String> marcas = dao.buscarMarcas();
+            for (String marca : marcas) {
+                comboxMarca.addItem(marca);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar marcas: " + e.getMessage());
+        }
+    }
 
+    private void preencherComboBoxModelos() throws Exception {
+        try {
+            VeiculosDAO dao = new VeiculosDAO();
+            List<String> modelos = dao.buscarModelos(); // Busca os modelos do banco
+            for (String modelo : modelos) {
+                comboxModelo.addItem(modelo); // Adiciona cada modelo à combobox
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar modelos: " + e.getMessage());
+        }
+    }
     private void buttonMenuCarroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenuCarroActionPerformed
         this.setVisible(false); // Esconde a tela de cadastro de carro
 
@@ -355,7 +386,7 @@ public class CadastroCarro extends javax.swing.JFrame {
     }//GEN-LAST:event_removerButtonActionPerformed
 
     private void alterarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarButtonActionPerformed
-    
+
     }//GEN-LAST:event_alterarButtonActionPerformed
 
     private void textMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textMarcaActionPerformed
@@ -397,7 +428,7 @@ public class CadastroCarro extends javax.swing.JFrame {
     }//GEN-LAST:event_comboxMarcaActionPerformed
 
     private void AdicionarAcessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarAcessActionPerformed
-     
+
     }//GEN-LAST:event_AdicionarAcessActionPerformed
 
     /**
