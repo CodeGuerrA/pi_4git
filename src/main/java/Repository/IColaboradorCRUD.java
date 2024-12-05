@@ -14,6 +14,5 @@ import java.util.List;
 public interface IColaboradorCRUD {
     public void insertColaborador(Colaborador colaborador) throws Exception;
     public void updateColaborador(Colaborador colaborador) throws Exception;
-    public void deleteColaboradorById(String id) throws Exception;
-    public void selectColaborador(String nome) throws Exception;
+    public void deleteColaboradorById(int id) throws Exception;
 }

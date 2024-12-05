@@ -4,10 +4,19 @@
  */
 package View;
 
+import Connection.ConexaoBD;
+import Controller.HashtableColaboradorController;
 import Controller.HashtableServicoController;
 import Model.Colaborador;
 import Model.Tarefas;
+import Persistence.ClientesDAO;
 import Persistence.ColaboradorDAO;
+import static Persistence.ColaboradorDAO.selectColaborador;
+import Persistence.ServicoDAO;
+import static Persistence.ServicoDAO.selectServico;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,12 +27,81 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CadastroColabServico extends javax.swing.JFrame {
 
+    private final HashtableColaboradorController repositoColaboradorController;
+    private final HashtableServicoController servicoController;
+    private final Principal principal; // Variável para manter referência do menu principal
+
     /**
      * Creates new form cadastroColaborador
      */
-    public CadastroColabServico() {
-        initComponents();
+    public CadastroColabServico(Principal principal) {
+        repositoColaboradorController = new HashtableColaboradorController();
+        servicoController = new HashtableServicoController();
+        this.principal = principal;
 
+        initComponents();
+        carregarColaboradoresNaTabela();
+        carregarServicosNaTabela();      // Carrega os serviços na tabela
+
+    }
+
+    private void carregarColaboradoresNaTabela() {
+        try (Connection conexao = ConexaoBD.getConexao()) {
+            if (conexao != null && !conexao.isClosed()) {
+                System.out.println("Conexão bem-sucedida com o banco de dados!");
+
+                repositoColaboradorController.clear();
+                selectColaborador(conexao, repositoColaboradorController);
+
+                DefaultTableModel model = (DefaultTableModel) tableColaborador.getModel();
+                model.setRowCount(0);
+
+                Enumeration<Colaborador> colaboradoresEnum = repositoColaboradorController.ListarTodosColaboradores().elements();
+
+                while (colaboradoresEnum.hasMoreElements()) {
+                    Colaborador colaborador = colaboradoresEnum.nextElement();
+                    model.addRow(new Object[]{
+                        colaborador.getId(),
+                        colaborador.getNome()
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao conectar ou consultar o banco de dados: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erro geral: " + e.getMessage());
+        }
+    }
+
+    private void carregarServicosNaTabela() {
+        try (Connection conexao = ConexaoBD.getConexao()) {
+            if (conexao != null && !conexao.isClosed()) {
+                System.out.println("Conexão bem-sucedida com o banco de dados!");
+
+                // Limpa o repositório de serviços
+                servicoController.clear();
+
+                // Busca os serviços no banco de dados e os adiciona ao repositório
+                selectServico(conexao, servicoController);
+
+                // Atualiza o modelo da tabela de serviços
+                DefaultTableModel model = (DefaultTableModel) cadastroServico.getModel();
+                model.setRowCount(0);
+
+                Enumeration<Tarefas> servicosEnum = servicoController.listarTodosServico().elements();
+                while (servicosEnum.hasMoreElements()) {
+                    Tarefas servico = servicosEnum.nextElement();
+                    model.addRow(new Object[]{
+                        servico.getNome(),
+                        servico.getPreco()
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao conectar ou consultar o banco de dados: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erro geral: " + e.getMessage());
+        }
     }
 
     /**
@@ -40,11 +118,14 @@ public class CadastroColabServico extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         cadastroServico = new javax.swing.JTable();
         LabelNome = new javax.swing.JLabel();
-        textNome = new javax.swing.JTextField();
+        textNomeServico = new javax.swing.JTextField();
         LabelPreço = new javax.swing.JLabel();
-        textPreco = new javax.swing.JTextField();
+        textPrecoServico = new javax.swing.JTextField();
         buttonAdicionarServico = new javax.swing.JButton();
         buttonRemoverServico = new javax.swing.JButton();
+        textRemoverServico = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        buttonAtualizarServico = new javax.swing.JButton();
         tabledColaborador = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableColaborador = new javax.swing.JTable();
@@ -52,8 +133,10 @@ public class CadastroColabServico extends javax.swing.JFrame {
         textColab = new javax.swing.JTextField();
         buttonAdicionarColb = new javax.swing.JButton();
         buttonRemoverCollab = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        textRemoverColaborador = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cadastroServico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -72,11 +155,17 @@ public class CadastroColabServico extends javax.swing.JFrame {
 
         LabelNome.setText("Nome");
 
+        textNomeServico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textNomeServicoActionPerformed(evt);
+            }
+        });
+
         LabelPreço.setText("Preço");
 
-        textPreco.addActionListener(new java.awt.event.ActionListener() {
+        textPrecoServico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textPrecoActionPerformed(evt);
+                textPrecoServicoActionPerformed(evt);
             }
         });
 
@@ -94,6 +183,15 @@ public class CadastroColabServico extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Remover");
+
+        buttonAtualizarServico.setText("Atualizar");
+        buttonAtualizarServico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAtualizarServicoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabledServicoLayout = new javax.swing.GroupLayout(tabledServico);
         tabledServico.setLayout(tabledServicoLayout);
         tabledServicoLayout.setHorizontalGroup(
@@ -103,30 +201,41 @@ public class CadastroColabServico extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(tabledServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(LabelNome)
-                    .addComponent(textNome)
+                    .addComponent(textNomeServico)
                     .addComponent(LabelPreço)
-                    .addComponent(textPreco, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
-                .addGap(88, 88, 88)
-                .addComponent(buttonAdicionarServico)
-                .addGap(26, 26, 26)
-                .addComponent(buttonRemoverServico)
+                    .addComponent(textPrecoServico, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addGroup(tabledServicoLayout.createSequentialGroup()
+                        .addComponent(buttonAdicionarServico)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonAtualizarServico)))
+                .addGap(28, 28, 28)
+                .addGroup(tabledServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textRemoverServico, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonRemoverServico))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         tabledServicoLayout.setVerticalGroup(
             tabledServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabledServicoLayout.createSequentialGroup()
-                .addGap(0, 49, Short.MAX_VALUE)
-                .addComponent(LabelNome)
+                .addGap(0, 43, Short.MAX_VALUE)
+                .addGroup(tabledServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelNome)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(tabledServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textNomeServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textRemoverServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
                 .addComponent(LabelPreço)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(textPrecoServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabledServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonAdicionarServico)
-                    .addComponent(buttonRemoverServico))
-                .addGap(51, 51, 51)
+                    .addComponent(buttonRemoverServico)
+                    .addComponent(buttonAtualizarServico))
+                .addGap(17, 17, 17)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -134,13 +243,10 @@ public class CadastroColabServico extends javax.swing.JFrame {
 
         tableColaborador.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
-                "Nome"
+                "ID", "Nome"
             }
         ));
         jScrollPane1.setViewportView(tableColaborador);
@@ -161,6 +267,13 @@ public class CadastroColabServico extends javax.swing.JFrame {
         });
 
         buttonRemoverCollab.setText("Remover");
+        buttonRemoverCollab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRemoverCollabActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Remover");
 
         javax.swing.GroupLayout tabledColaboradorLayout = new javax.swing.GroupLayout(tabledColaborador);
         tabledColaborador.setLayout(tabledColaboradorLayout);
@@ -172,19 +285,25 @@ public class CadastroColabServico extends javax.swing.JFrame {
                 .addGroup(tabledColaboradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nomeColab, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textColab, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(tabledColaboradorLayout.createSequentialGroup()
-                        .addComponent(buttonAdicionarColb)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonRemoverCollab)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonAdicionarColb))
+                .addGap(240, 240, 240)
+                .addGroup(tabledColaboradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonRemoverCollab)
+                    .addComponent(jLabel1)
+                    .addComponent(textRemoverColaborador, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(491, Short.MAX_VALUE))
         );
         tabledColaboradorLayout.setVerticalGroup(
             tabledColaboradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabledColaboradorLayout.createSequentialGroup()
                 .addGap(55, 55, 55)
-                .addComponent(nomeColab, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(tabledColaboradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(nomeColab, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textColab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(tabledColaboradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textColab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textRemoverColaborador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addGroup(tabledColaboradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonAdicionarColb)
@@ -209,17 +328,53 @@ public class CadastroColabServico extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPrecoActionPerformed
+    private void textPrecoServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPrecoServicoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textPrecoActionPerformed
+    }//GEN-LAST:event_textPrecoServicoActionPerformed
 
     private void buttonAdicionarServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarServicoActionPerformed
+        try {
+            String nome = textNomeServico.getText().trim();
 
+            String preco = textPrecoServico.getText().trim();
+            Double i = Double.parseDouble(preco);
+            Tarefas servico = new Tarefas();
+            servico.setNome(nome);
+            servico.setPreco(i);
+            if (nome.isEmpty() || preco.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.",
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+                return; // Encerra o método se houver campos vazios
+            }
+            ServicoDAO servicoDAO = new ServicoDAO();
+            servicoDAO.insertServico(servico);
+            JOptionPane.showMessageDialog(this, "Serviço adicionado com sucesso!",
+                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            textColab.setText("");
+            carregarServicosNaTabela();
+        } catch (Exception e) {
+            e.printStackTrace();  // Exibe o erro caso algo dê errado
+            JOptionPane.showMessageDialog(this, "Erro ao adicionar servico " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
 
     }//GEN-LAST:event_buttonAdicionarServicoActionPerformed
 
     private void buttonRemoverServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverServicoActionPerformed
+        try {
+            String input = textRemoverServico.getText().trim();
+            ServicoDAO servicoDAO = new ServicoDAO();
+            servicoDAO.removerServico(input);
+            JOptionPane.showMessageDialog(this, "Serviço removido com sucesso!",
+                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            carregarServicosNaTabela();
+            textRemoverServico.setText("");
 
+        } catch (Exception e) {
+            e.printStackTrace();  // Exibe o erro caso algo dê errado
+            JOptionPane.showMessageDialog(this, "Erro ao adicionar Serviço : " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
 
     }//GEN-LAST:event_buttonRemoverServicoActionPerformed
 
@@ -236,12 +391,19 @@ public class CadastroColabServico extends javax.swing.JFrame {
             String nome = textColab.getText().trim();
             Colaborador colaborador = new Colaborador();
             colaborador.setNome(nome);
+            if (nome.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.",
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+                return; // Encerra o método se houver campos vazios
+            }
+            nome = nome.substring(0, 1).toUpperCase() + nome.substring(1).toLowerCase();
 
             ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
             colaboradorDAO.insertColaborador(colaborador);
             JOptionPane.showMessageDialog(this, "Colaborador adicionado com sucesso!",
                     "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             textColab.setText("");
+            carregarColaboradoresNaTabela();
         } catch (Exception e) {
             e.printStackTrace();  // Exibe o erro caso algo dê errado
             JOptionPane.showMessageDialog(this, "Erro ao adicionar colaborador: " + e.getMessage(),
@@ -250,50 +412,72 @@ public class CadastroColabServico extends javax.swing.JFrame {
         ;
 
     }//GEN-LAST:event_buttonAdicionarColbActionPerformed
+
+    private void buttonRemoverCollabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverCollabActionPerformed
+        try {
+            String input = textRemoverColaborador.getText().trim();
+            int i = Integer.parseInt(input);
+            ColaboradorDAO colaboradorDAO = new ColaboradorDAO();
+            colaboradorDAO.deleteColaboradorById(i);
+            JOptionPane.showMessageDialog(this, "Colaborador removido com sucesso!",
+                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            carregarColaboradoresNaTabela();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao remover colaborador: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+            textRemoverColaborador.setText("");
+        }
+
+    }//GEN-LAST:event_buttonRemoverCollabActionPerformed
+
+    private void textNomeServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textNomeServicoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textNomeServicoActionPerformed
+
+    private void buttonAtualizarServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAtualizarServicoActionPerformed
+        try {
+            String nomeAlterar = textNomeServico.getText().trim();
+            String precoAlterar = textPrecoServico.getText().trim();
+            Double i = Double.parseDouble(precoAlterar);
+            Tarefas servico = new Tarefas();
+            servico.setNome(nomeAlterar);
+            servico.setPreco(i);
+            ServicoDAO servicoDAO = new ServicoDAO();
+            servicoDAO.updateServico(servico, nomeAlterar);
+            JOptionPane.showMessageDialog(this, "Servico Alterado com sucesso!",
+                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            carregarServicosNaTabela();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar colaborador: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+            textNomeServico.setText("");
+            textPrecoServico.setText("");
+
+        }
+    }//GEN-LAST:event_buttonAtualizarServicoActionPerformed
+
     private void atualizarTabelaCliente(Colaborador colaborador) {
         // Limpa a tabela antes de adicionar o colaborador
         DefaultTableModel model = (DefaultTableModel) tableColaborador.getModel();
-        model.setRowCount(0);  
+        model.setRowCount(0);
 
         // Adiciona o colaborador específico
         model.addRow(new Object[]{colaborador.getNome()});
+    }
+
+    private void limparTabela() {
+        DefaultTableModel model = (DefaultTableModel) tableColaborador.getModel();
+        model.setRowCount(0);
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroColabServico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroColabServico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroColabServico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroColabServico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+        java.awt.EventQueue.invokeLater(() -> {
+            Principal principal = new Principal();
+            principal.setVisible(true);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastroColabServico().setVisible(true);
-            }
         });
     }
 
@@ -302,9 +486,12 @@ public class CadastroColabServico extends javax.swing.JFrame {
     private javax.swing.JLabel LabelPreço;
     private javax.swing.JButton buttonAdicionarColb;
     private javax.swing.JButton buttonAdicionarServico;
+    private javax.swing.JButton buttonAtualizarServico;
     private javax.swing.JButton buttonRemoverCollab;
     private javax.swing.JButton buttonRemoverServico;
     private javax.swing.JTable cadastroServico;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel nomeColab;
@@ -313,7 +500,9 @@ public class CadastroColabServico extends javax.swing.JFrame {
     private javax.swing.JPanel tabledColaborador;
     private javax.swing.JPanel tabledServico;
     private javax.swing.JTextField textColab;
-    private javax.swing.JTextField textNome;
-    private javax.swing.JTextField textPreco;
+    private javax.swing.JTextField textNomeServico;
+    private javax.swing.JTextField textPrecoServico;
+    private javax.swing.JTextField textRemoverColaborador;
+    private javax.swing.JTextField textRemoverServico;
     // End of variables declaration//GEN-END:variables
 }

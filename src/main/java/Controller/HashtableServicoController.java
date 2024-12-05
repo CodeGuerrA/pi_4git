@@ -37,6 +37,8 @@ public class HashtableServicoController implements ServicoService {
     public Hashtable<String, Tarefas> listarTodosServico() {
         return servicos;
     }
-
+public void clear() {
+        servicos.clear();  // Corrigido para 'clientes.clear()'
+    }
 
 }

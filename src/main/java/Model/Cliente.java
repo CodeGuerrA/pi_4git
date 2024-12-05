@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Cliente {
 
-    private String ID;
+    private int id;
     private String nome;
     private String endereco;
     private String CPF;
@@ -15,58 +15,16 @@ public class Cliente {
     private String telefones;
     private String contatos;
 
-    private Hashtable<String, Veiculos> veiculos;
-
-
-
     public Cliente() {
-        this.ID = gerarID();
-        this.veiculos = new Hashtable<>();
+
     }
 
-    public Cliente(String nome, String endereco, String CPF, String CNPJ, String Ins_Estadual, String email, String telefones, String contatos) {
-        this.ID = gerarID();
-        this.nome = nome;
-        this.endereco = endereco;
-        this.CPF = CPF;
-        this.CNPJ = CNPJ;
-        this.Ins_Estadual = Ins_Estadual;
-        this.email = email;
-        this.telefones = telefones;
-        this.contatos = contatos;
-        this.veiculos = new Hashtable<>();
+    public int getId() {
+        return id;
     }
 
-    private String gerarID() {
-        return UUID.randomUUID().toString();
-    }
-
-    public void adicionarVeiculo(Veiculos veiculo) {
-        veiculos.put(veiculo.getPlaca(), veiculo);
-    }
-
-    public void removerVeiculo(Veiculos veiculo) {
-        veiculos.remove(veiculo.getPlaca());
-    }
-
-    public Veiculos getVeiculo(String Placa) {
-        return veiculos.get(Placa);
-    }
-
-    public Hashtable<String, Veiculos> getVeiculos() {
-        return veiculos;
-    }
-
-    public void setVeiculos(Hashtable<String, Veiculos> veiculos) {
-        this.veiculos = veiculos;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -133,9 +91,4 @@ public class Cliente {
         this.contatos = contatos;
     }
 
-    public Veiculos getVeiculoPorPlaca(String placa) {
-        return veiculos.get(placa);
-    }
 }
-
-

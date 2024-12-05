@@ -5,17 +5,17 @@ import java.util.Hashtable;
 
 /**
  *
- * @author Guerra
- */
+ 
+@author Guerra*/
 public interface VeiculoService {
 
-    void adicionarVeiculo(String placa, Veiculos veiculo);
-    
+    public void adicionarVeiculo(Veiculos veiculo);
+
     Veiculos buscarVeiculosPelaPlaca(String placa);
 
 
     Hashtable<String, Veiculos> listarTodosVeiculos();
-    
-    
+
+
 
 }

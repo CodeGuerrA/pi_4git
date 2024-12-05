@@ -37,5 +37,8 @@ public class HashtableProdutoController implements ProdutoService {
     public Hashtable<String, Produto> ListarTodosProdutos() {
         return produtos;
     }
+      public void clear() {
+        produtos.clear();  // Corrigido para 'clientes.clear()'
+    }
 
 }

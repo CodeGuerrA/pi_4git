@@ -43,4 +43,7 @@ public class HashtableColaboradorController implements ColaboradorService {
     public Hashtable<String, Colaborador> ListarTodosColaboradores() {
         return colaboradores;
     }
+      public void clear() {
+        colaboradores.clear();  // Corrigido para 'clientes.clear()'
+    }
 }

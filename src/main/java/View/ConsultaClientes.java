@@ -12,6 +12,7 @@ import static Persistence.ClientesDAO.selectClientes;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -43,10 +44,13 @@ public class ConsultaClientes extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaClientes = new javax.swing.JTable();
-        textBuscar = new javax.swing.JTextField();
+        textBusca = new javax.swing.JTextField();
         buttonBuscar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         buttonRefresh = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        textRemover = new javax.swing.JTextField();
+        buttonRemover = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -55,7 +59,7 @@ public class ConsultaClientes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "CPF/CNPJ", "Telefone", "Endereço", "E-mail", "Contatos", "Inscrição Estadual"
+                "ID", "Nome", "CPF/CNPJ", "Telefone", "Endereço", "E-mail", "Contatos", "Inscrição Estadual"
             }
         ));
         jScrollPane1.setViewportView(tabelaClientes);
@@ -76,6 +80,15 @@ public class ConsultaClientes extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Remover");
+
+        buttonRemover.setText("Remover");
+        buttonRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRemoverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -86,24 +99,34 @@ public class ConsultaClientes extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(textBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(buttonRefresh)
                             .addComponent(buttonBuscar))))
+                .addGap(162, 162, 162)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(textRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonRemover))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(87, 87, 87)
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonBuscar))
+                    .addComponent(textBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonBuscar)
+                    .addComponent(textRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(buttonRefresh)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonRefresh)
+                    .addComponent(buttonRemover))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -142,6 +165,7 @@ private void carregarClientesNaTabela() {
                 while (clientesEnum.hasMoreElements()) {
                     Cliente cliente = clientesEnum.nextElement();
                     model.addRow(new Object[]{
+                        cliente.getId(), // ID do cliente
                         cliente.getNome(),
                         cliente.getCNPJ() != null && !cliente.getCNPJ().isEmpty() ? cliente.getCNPJ() : cliente.getCPF(),
                         cliente.getTelefones(),
@@ -171,7 +195,7 @@ private void carregarClientesNaTabela() {
                 selectClientes(conexao, repositorio);
 
                 // Busca pelo CPF digitado
-                String chave = textBuscar.getText().trim();
+                String chave = textBusca.getText().trim();
                 Cliente clienteEncontrado = repositorio.buscarClientePorChave(chave);
 
                 if (clienteEncontrado != null) {
@@ -182,6 +206,7 @@ private void carregarClientesNaTabela() {
                     // Caso não encontre, limpa a tabela ou exibe uma mensagem
                     limparTabela();
                 }
+                textBusca.setText("");
             }
         } catch (SQLException e) {
             System.err.println("Erro ao conectar ou consultar o banco de dados: " + e.getMessage());
@@ -194,14 +219,41 @@ private void carregarClientesNaTabela() {
     private void buttonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRefreshActionPerformed
         carregarClientesNaTabela();
     }//GEN-LAST:event_buttonRefreshActionPerformed
+
+    private void buttonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverActionPerformed
+        try {
+            String input = textRemover.getText().trim(); // Mantém a pontuação
+            ClientesDAO clientesDAO = new ClientesDAO();
+
+            if (input.length() == 18) { //tamanho do cnpj com os caracteres especiais
+                clientesDAO.removerPJ(input);
+                JOptionPane.showMessageDialog(this, "Cliente (Pessoa Jurídica) removido com sucesso!",
+                        "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } else if (input.length() == 14) { //tamanho do cpf com os caracteres especiais
+                clientesDAO.removerPF(input);
+                JOptionPane.showMessageDialog(this, "Cliente (Pessoa Física) removido com sucesso!",
+                        "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "O valor informado não é um CPF ou CNPJ válido.",
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+                textRemover.setText("");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao remover cliente: " + e.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+            textRemover.setText("");
+        }
+    }//GEN-LAST:event_buttonRemoverActionPerformed
 // Método para atualizar a tabela com os dados do cliente encontrado
 
+ // Método para atualizar a tabela com os dados do cliente encontrado
     private void atualizarTabelaCliente(Cliente cliente) {
         // Limpa a tabela antes de adicionar o cliente
         DefaultTableModel model = (DefaultTableModel) tabelaClientes.getModel();
         model.setRowCount(0);  // Limpa todas as linhas da tabela
 
         model.addRow(new Object[]{
+            cliente.getId(),  // ID do cliente
             cliente.getNome(),
             cliente.getCNPJ() != null && !cliente.getCNPJ().isEmpty() ? cliente.getCNPJ() : cliente.getCPF(),
             cliente.getTelefones(),
@@ -258,10 +310,13 @@ private void carregarClientesNaTabela() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonBuscar;
     private javax.swing.JButton buttonRefresh;
+    private javax.swing.JButton buttonRemover;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabelaClientes;
-    private javax.swing.JTextField textBuscar;
+    private javax.swing.JTextField textBusca;
+    private javax.swing.JTextField textRemover;
     // End of variables declaration//GEN-END:variables
 }

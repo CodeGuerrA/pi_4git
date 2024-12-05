@@ -12,20 +12,18 @@ public class Colaborador {
     private String id;
     private String nome;
     private String cargo;
-    
-    public Colaborador(){
-        this.id = gerarID();
+
+    public Colaborador() {
     }
     
+
+    
     public Colaborador(String id, String nome, String cargo) {
-        this.id = gerarID();
+        this.id = id;
         this.nome = nome;
         this.cargo = cargo;
     }
     
-    private String gerarID() {
-        return UUID.randomUUID().toString();
-    }
     
     public String getId() {
         return id;
